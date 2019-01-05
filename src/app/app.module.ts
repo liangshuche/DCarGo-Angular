@@ -26,6 +26,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { NavigationComponent } from './shared/navigation/navigation.component';
 import { UserComponent } from './user/user.component';
 import { RegisterPopoverComponent } from './user/register-popover/register-popover.component';
+import { SpinnerComponent } from './shared/spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { RegisterPopoverComponent } from './user/register-popover/register-popov
     NavigationComponent,
     UserComponent,
     RegisterPopoverComponent,
+    SpinnerComponent,
     // NavComponent
   ],
   imports: [
@@ -58,7 +60,10 @@ import { RegisterPopoverComponent } from './user/register-popover/register-popov
     LayoutModule,
     MatListModule,
   ],
-  entryComponents: [ RegisterPopoverComponent ],
+  entryComponents: [
+    RegisterPopoverComponent,
+    SpinnerComponent
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

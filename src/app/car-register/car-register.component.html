@@ -1,40 +1,27 @@
 <div class='container' fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center">
-  <h1>TEST</h1>
-  <!-- <mat-h2>Rent out your car!!!</mat-h2> -->
-  <!-- <h1 class="md-display-3">Rent out your car</h1> -->
-  <h3 class="mat-title ">Rent out your car</h3>
-  <!-- <div fxFlex="100%"> -->
-      <mat-form-field appearance="outline">
-          <mat-label>車輛型號</mat-label>
-          <input matInput placeholder="Placeholder">
-          <!-- <mat-hint>Hint</mat-hint> -->
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-          <mat-label>詳細資料</mat-label>
-          <input matInput placeholder="Placeholder">
-          <!-- <mat-hint>Hint</mat-hint> -->
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-          <mat-label>車齡</mat-label>
-          <input matInput placeholder="Placeholder">
-          <!-- <mat-hint>Hint</mat-hint> -->
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-          <mat-label>出租價格</mat-label>
-          <input matInput placeholder="Placeholder">
-          <!-- <mat-hint>Hint</mat-hint> -->
-      </mat-form-field>
-  <!-- </div> -->
-    
+  <h2 class="mat-title ">Rent out your car</h2>
     <mat-form-field appearance="outline">
-        <mat-label>Outline form field</mat-label>
-        <input matInput placeholder="Placeholder">
-        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-        <mat-hint>Hint</mat-hint>
-    </mat-form-field><mat-form-field appearance="outline">
-        <mat-label>Outline form field</mat-label>
-        <input matInput placeholder="Placeholder">
-        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-        <mat-hint>Hint</mat-hint>
+        <mat-label>車輛型號</mat-label>
+        <input matInput placeholder="" [(ngModel)]="carInput.name">
     </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>詳細資料</mat-label>
+        <input matInput placeholder="" [(ngModel)]="carInput.info">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>車輛類別</mat-label>
+        <mat-select placeholder="類別" [(ngModel)]="carInput.type">
+            <mat-option *ngFor="let type of carTypeOptions" [value]="type">{{ type }}</mat-option>
+        </mat-select>
+        <!-- <input matInput placeholder="Placeholder" [(ngModel)]="carInput.type"> -->
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>車齡</mat-label>
+        <input type="number" matInput placeholder="" [(ngModel)]="carInput.age">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>出租價格</mat-label>
+        <input type="number" matInput placeholder="" [(ngModel)]="carInput.price">
+    </mat-form-field>
+    <button mat-button (click)="onRegister()">Register</button>
   </div>

@@ -1,7 +1,7 @@
 export class CarModel {
     name: string;
     info: string;
-    carType: string;
+    type: string;
     age: number;
     price: number;
     xLocate: number;
