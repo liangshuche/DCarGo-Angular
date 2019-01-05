@@ -4,7 +4,7 @@ import { Observable, from, of, merge } from 'rxjs';
 import { map, tap, mergeMap, catchError } from 'rxjs/operators';
 import { CarModel } from '../models/car.model';
 import { CarTypeEnum } from '../enums/car-type.enum';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { SpinnerComponent } from 'src/app/shared/spinner/spinner.component';
 // import * as TruffleContract from 'truffle-contract';
 declare let require: any;
@@ -21,6 +21,7 @@ export class ContractService {
   private contractAddress: string = '0xe43d15beaca390581a5c1f898805dd0bc30fe0a6';
   private currentAddress: string;
   private currentName: string;
+  private spinnerRef: MatDialogRef<SpinnerComponent>;
   constructor(
     private dialog: MatDialog
   ) {
@@ -98,10 +99,11 @@ export class ContractService {
             mergeMap((address) => {
                 return from(this.contract.methods.enroll(name).send({from: address}));
             }),
-            tap(() => this.dialog.closeAll()),
+            tap(() => this.spinnerRef.close()),
             catchError((err) => {
                 console.log(err);
-                this.dialog.closeAll();
+                this.spinnerRef.close();
+                // this.dialog.closeAll();
                 return of(null);
             })
         );
@@ -115,10 +117,11 @@ export class ContractService {
             mergeMap((address) => {
                 return from(this.contract.methods.rentCar(idx).send({from: address}));
             }),
-            tap(() => this.dialog.closeAll()),
+            tap(() => this.spinnerRef.close()),
             catchError((err) => {
                 console.log(err);
-                this.dialog.closeAll();
+                this.spinnerRef.close();
+                // this.dialog.closeAll();
                 return of(null);
             })
         );
@@ -130,10 +133,11 @@ export class ContractService {
             mergeMap((address) => {
                 return from(this.contract.methods.returnCar(idx).send({from: address}));
             }),
-            tap(() => this.dialog.closeAll()),
+            tap(() => this.spinnerRef.close()),
             catchError((err) => {
                 console.log(err);
-                this.dialog.closeAll();
+                this.spinnerRef.close();
+                // this.dialog.closeAll();
                 return of(null);
             })
         );
@@ -145,10 +149,11 @@ export class ContractService {
             mergeMap((address) => {
                 return from(this.contract.methods.addCar(car.name, car.info, car.type, car.age, car.price, 0, 0).send({from: address}));
             }),
-            tap(() => this.dialog.closeAll()),
+            tap(() => this.spinnerRef.close()),
             catchError((err) => {
                 console.log(err);
-                this.dialog.closeAll();
+                this.spinnerRef.close();
+                // this.dialog.closeAll();
                 return of(null);
             })
         );
@@ -157,7 +162,7 @@ export class ContractService {
 // ###################### Private ######################
 
     private presentSpinner() {
-        this.dialog.open(SpinnerComponent, {
+        this.spinnerRef = this.dialog.open(SpinnerComponent, {
             disableClose: true,
         });
     }
