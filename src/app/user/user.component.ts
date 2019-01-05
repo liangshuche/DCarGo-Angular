@@ -11,14 +11,19 @@ import { tap, mergeMap, map } from 'rxjs/operators';
 })
 export class UserComponent implements OnInit {
   userAddress: string;
+  userName: string;
   constructor(
     private dialog: MatDialog,
     private contractService: ContractService
   ) { }
 
   ngOnInit() {
-    this.contractService.getCurrentAddress().subscribe((addr) => {
-      this.userAddress = addr;
+    this.contractService.getcurrentAddress().subscribe((address) => {
+      this.userAddress = address;
+    });
+
+    this.contractService.getCurrentName().subscribe((name) => {
+      this.userName = name;
     });
   }
 
@@ -28,11 +33,6 @@ export class UserComponent implements OnInit {
       tap((name) => { console.log(name); }),
       mergeMap((name) => {
         return this.contractService.registerUserName(name);
-      }),
-      map((result) => {
-        if (result) {
-          console.log('success');
-        }
       })
     ).subscribe();
   }

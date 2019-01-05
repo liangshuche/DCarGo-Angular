@@ -13,11 +13,6 @@ export class HomepageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.contractService.getAccount();
-  }
-
-  onAdd() {
-    this.contractService.addCar();
   }
 
 }
