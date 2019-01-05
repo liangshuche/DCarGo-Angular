@@ -18,6 +18,10 @@ export class UserComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.updateUser();
+  }
+
+  updateUser() {
     this.contractService.getcurrentAddress().subscribe((address) => {
       this.userAddress = address;
     });
@@ -34,7 +38,9 @@ export class UserComponent implements OnInit {
       mergeMap((name) => {
         return this.contractService.registerUserName(name);
       })
-    ).subscribe();
+    ).subscribe(() => {
+      this.updateUser();
+    });
   }
 
 }
