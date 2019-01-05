@@ -8,6 +8,8 @@ export class CarModel {
     yLocate: number;
     id: number;
     oil: number;
-    owner: string;
-    renter: string;
+    ownerAddr: string;
+    ownerName: string;
+    renterAddr: string;
+    renterName: string;
 }

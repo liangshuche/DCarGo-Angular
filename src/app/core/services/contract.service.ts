@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as Web3 from 'web3';
-import { Observable, from, of } from 'rxjs';
+import { Observable, from, of, merge } from 'rxjs';
 import { map, tap, mergeMap, catchError } from 'rxjs/operators';
 import { CarModel } from '../models/car.model';
 import { CarTypeEnum } from '../enums/car-type.enum';
@@ -71,7 +71,7 @@ export class ContractService {
             mergeMap(() => {
                 return from(this.contract.methods.cars(idx).call());
             }),
-            map((result: CarModel) => {
+            map((result: any) => {
                 return {
                     name: result.name,
                     info: result.info,
@@ -82,8 +82,8 @@ export class ContractService {
                     yLocate: result.yLocate,
                     id: idx,
                     oil: result.oil,
-                    owner: result.owner,
-                    renter: result.renter
+                    ownerAddr: result.owner,
+                    renterAddr: result.renter
                 } as CarModel;
             })
         );
@@ -153,6 +153,8 @@ export class ContractService {
             })
         );
     }
+
+// ###################### Private ######################
 
     private presentSpinner() {
         this.dialog.open(SpinnerComponent, {
