@@ -3,6 +3,11 @@
       <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
+
+      <button type="button" mat-icon-button routerLink="/">
+        <mat-icon>home</mat-icon>
+      </button>
+      
       <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs>
         <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
           <mat-icon aria-label="Side nav toggle icon">settings</mat-icon>
@@ -10,8 +15,8 @@
         <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
           <mat-icon aria-label="Side nav toggle icon">help_outline</mat-icon>
         </button>
-        <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
-          <mat-icon aria-label="Side nav toggle icon">person_outline</mat-icon>
+        <button mat-icon-button routerLink="/user">
+          <mat-icon>person_outline</mat-icon>
         </button>
       </div>
     </mat-toolbar-row>

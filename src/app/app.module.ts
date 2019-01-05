@@ -12,26 +12,29 @@ import {
   MatSelectModule,
   MatInputModule,
   MatProgressSpinnerModule,
-  MatListModule } from '@angular/material';
+  MatListModule,
+  MatDialogModule } from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomepageComponent } from './homepage/homepage.component';
-import { UserRegisterComponent } from './user-register/user-register.component';
 import { CarRegisterComponent } from './car-register/car-register.component';
 import { CarListComponent } from './car-list/car-list.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { NavigationComponent } from './shared/navigation/navigation.component';
+import { UserComponent } from './user/user.component';
+import { RegisterPopoverComponent } from './user/register-popover/register-popover.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomepageComponent,
-    UserRegisterComponent,
     CarRegisterComponent,
     CarListComponent,
     NavigationComponent,
+    UserComponent,
+    RegisterPopoverComponent,
     // NavComponent
   ],
   imports: [
@@ -48,10 +51,12 @@ import { NavigationComponent } from './shared/navigation/navigation.component';
     MatSelectModule,
     MatInputModule,
     MatProgressSpinnerModule,
+    MatDialogModule,
     NgbModule,
     LayoutModule,
     MatListModule
   ],
+  entryComponents: [ RegisterPopoverComponent ],
   providers: [],
   bootstrap: [AppComponent]
 })
