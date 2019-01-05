@@ -55,39 +55,83 @@ export class ContractService {
     });
   }
 
-  getAllCars() {
-  // getAllCars(): Observable<CarModel[]> {
-    this.contract.methods.getLength().call().then((length) => {
-      console.log(length);
-      for (let i = 0; i < length; ++i) {
-        this.contract.methods.cars(i).call().then((result) => {
-          console.log(result);
-        });
-      }
-    });
-  }
-
   addCar() {
     this.web3.eth.getAccounts().then((account) => {
       this.contract.methods.addCar('name', 'info', CarTypeEnum.Sedan, 0, 0, 0, 0).send({from: account[0]});
     });
   }
-  rentOutCar(car: CarModel) {
-    console.log(car);
-    this.getCurrentAccount().pipe(
-      tap((account) => { this.presentSpinner(); console.log(account); }),
+
+  getNumCars(): Observable<number> {
+    return from(this.contract.methods.getLength().call());
+  }
+
+  getCarByIdx(idx: number): Observable<CarModel> {
+    return this.getNumCars().pipe(
+      mergeMap(() => {
+        return from(this.contract.methods.cars(idx).call());
+      }),
+      map((result: CarModel) => {
+        // console.log(result);
+        return {
+          name: result.name,
+          info: result.info,
+          type: result.type,
+          age: result.age,
+          price: result.price,
+          xLocate: result.xLocate,
+          yLocate: result.yLocate,
+          id: idx,
+          oil: result.oil,
+          owner: result.owner,
+          renter: result.renter
+        } as CarModel;
+      })
+    );
+  }
+
+  rentCarByIdx(idx: number): Observable<string> {
+    return this.getCurrentAccount().pipe(
+      tap((account) => {this.presentSpinner(); console.log(account); }),
       mergeMap((account) => {
-        return from(this.contract.methods.addCar(car.name, car.info, car.type, car.age, car.price, 0, 0).send({from: account}));
+        return from(this.contract.methods.rentCar(idx).send({from: account}));
       }),
-      tap(() => {
-        this.dialog.closeAll();
-      }),
+      tap(() => this.dialog.closeAll()),
       catchError((err) => {
         console.log(err);
         this.dialog.closeAll();
         return of(null);
       })
-    ).subscribe();
+    );
+  }
+
+  returnCarByIdx(idx: number): Observable<string> {
+    return this.getCurrentAccount().pipe(
+      tap((account) => {this.presentSpinner(); console.log(account); }),
+      mergeMap((account) => {
+        return from(this.contract.methods.returnCar(idx).send({from: account}));
+      }),
+      tap(() => this.dialog.closeAll()),
+      catchError((err) => {
+        console.log(err);
+        this.dialog.closeAll();
+        return of(null);
+      })
+    );
+  }
+
+  rentOutCar(car: CarModel): Observable<string> {
+    return this.getCurrentAccount().pipe(
+      tap((account) => { this.presentSpinner(); console.log(account); }),
+      mergeMap((account) => {
+        return from(this.contract.methods.addCar(car.name, car.info, car.type, car.age, car.price, 0, 0).send({from: account}));
+      }),
+      tap(() => this.dialog.closeAll()),
+      catchError((err) => {
+        console.log(err);
+        this.dialog.closeAll();
+        return of(null);
+      })
+    );
   }
 
   private getCurrentAccount(): Observable<string> {

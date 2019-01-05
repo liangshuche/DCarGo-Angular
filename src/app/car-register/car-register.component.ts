@@ -29,7 +29,7 @@ export class CarRegisterComponent implements OnInit {
         return;
       }
     }
-    this.contractService.rentOutCar(this.carInput);
+    this.contractService.rentOutCar(this.carInput).subscribe();
   }
 
 }

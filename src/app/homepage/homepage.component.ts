@@ -14,7 +14,6 @@ export class HomepageComponent implements OnInit {
 
   ngOnInit() {
     this.contractService.getAccount();
-    this.contractService.getAllCars();
   }
 
   onAdd() {

@@ -14,7 +14,8 @@ import {
   MatInputModule,
   MatProgressSpinnerModule,
   MatListModule,
-  MatDialogModule } from '@angular/material';
+  MatDialogModule,
+  MatCardModule} from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -27,6 +28,7 @@ import { NavigationComponent } from './shared/navigation/navigation.component';
 import { UserComponent } from './user/user.component';
 import { RegisterPopoverComponent } from './user/register-popover/register-popover.component';
 import { SpinnerComponent } from './shared/spinner/spinner.component';
+import { CarDetailComponent } from './car-list/car-detail/car-detail.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,7 @@ import { SpinnerComponent } from './shared/spinner/spinner.component';
     UserComponent,
     RegisterPopoverComponent,
     SpinnerComponent,
+    CarDetailComponent,
     // NavComponent
   ],
   imports: [
@@ -59,6 +62,7 @@ import { SpinnerComponent } from './shared/spinner/spinner.component';
     NgbModule,
     LayoutModule,
     MatListModule,
+    MatCardModule
   ],
   entryComponents: [
     RegisterPopoverComponent,
