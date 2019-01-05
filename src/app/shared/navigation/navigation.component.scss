@@ -13,4 +13,10 @@
 
 .sidenav {
     width: 200px;
+    height: calc(100vh - 70px);
+}
+
+.sidenav-content {
+    height: calc(100vh - 70px);
+    overflow-y: scroll;
 }
