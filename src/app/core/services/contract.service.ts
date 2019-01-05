@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as Web3 from 'web3';
+import { Observable } from 'rxjs';
+import { CarModel } from '../models/car.model';
+import { CarTypeEnum } from '../enums/car-type.enum';
 // import * as TruffleContract from 'truffle-contract';
 declare let require: any;
 declare let window: any;
@@ -32,4 +35,23 @@ export class ContractService {
       console.log(account);
     });
   }
+
+  getAllCars() {
+  // getAllCars(): Observable<CarModel[]> {
+    this.contract.methods.getLength().call().then((length) => {
+      console.log(length);
+      for (let i = 0; i < length; ++i) {
+        this.contract.methods.cars(i).call().then((result) => {
+          console.log(result);
+        });
+      }
+    });
+  }
+
+  addCar() {
+    this.web3.eth.getAccounts().then((account) => {
+      this.contract.methods.addCar('name', 'info', CarTypeEnum.Sedan, 0, 0, 0, 0).send({from: account[0]});
+    });
+  }
+
 }

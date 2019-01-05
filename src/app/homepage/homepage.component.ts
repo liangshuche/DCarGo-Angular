@@ -4,7 +4,7 @@ import { ContractService } from '../core/services/contract.service';
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
-  styleUrls: ['./homepage.component.css']
+  styleUrls: ['./homepage.component.scss']
 })
 export class HomepageComponent implements OnInit {
   images = [1, 2, 3].map(() => `https://picsum.photos/900/500?random&t=${Math.random()}`);
@@ -14,6 +14,11 @@ export class HomepageComponent implements OnInit {
 
   ngOnInit() {
     this.contractService.getAccount();
+    this.contractService.getAllCars();
+  }
+
+  onAdd() {
+    this.contractService.addCar();
   }
 
 }
