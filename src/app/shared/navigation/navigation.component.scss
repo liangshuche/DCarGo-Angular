@@ -4,4 +4,13 @@
     top: 0; /* Sets the sticky toolbar to be on top */
     z-index: 1000; /* Ensure that your app's content doesn't overlap the toolbar */
     height: 70px;
+    background-color: black;
+}
+
+.mat-nav-list a.active {
+    background: lightgray;
+}
+
+.sidenav {
+    width: 200px;
 }
