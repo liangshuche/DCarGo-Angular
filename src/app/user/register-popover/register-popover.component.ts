@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-register-popover',
@@ -6,10 +7,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./register-popover.component.scss']
 })
 export class RegisterPopoverComponent implements OnInit {
+  @Output() doConfirm: EventEmitter<string>;
 
-  constructor() { }
+  name: string;
+  constructor(
+    private dialogRef: MatDialogRef<RegisterPopoverComponent>,
+  ) { }
 
   ngOnInit() {
+  }
+
+  onConfirm() {
+    this.dialogRef.close(this.name);
+    // this.doConfirm.emit(this.name);
   }
 
 }

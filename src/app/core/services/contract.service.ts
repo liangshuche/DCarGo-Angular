@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as Web3 from 'web3';
-import { Observable } from 'rxjs';
+import { Observable, from, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { CarModel } from '../models/car.model';
 import { CarTypeEnum } from '../enums/car-type.enum';
 // import * as TruffleContract from 'truffle-contract';
@@ -28,6 +29,20 @@ export class ContractService {
     }
 
     this.contract = new this.web3.eth.Contract(tokenAbi, this.contractAddress);
+  }
+
+  getCurrentAddress(): Observable<string> {
+    return from(this.web3.eth.getAccounts()).pipe(
+      map((result) => {
+        return result[0];
+      })
+    );
+  }
+
+  registerUserName(name: string): Observable<boolean> {
+    // TODO: register to contract
+    console.log(name);
+    return of(true);
   }
 
   getAccount() {
