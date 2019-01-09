@@ -1,0 +1,14 @@
+.container {
+    min-height: calc(100vh - 70px);
+}
+
+.example-card {
+    margin: auto;
+    max-width: 80%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+agm-map {
+    height: calc(100vh - 150px);
+  }

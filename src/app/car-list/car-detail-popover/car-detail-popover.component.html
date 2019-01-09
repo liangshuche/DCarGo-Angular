@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>
+  {{ car.name }}
+</h2>
+  
+<mat-dialog-content class="post-form">
+  <h3>{{ car.type }}</h3>
+    <ul>
+        <li mat-list-item>Info: {{ car.info }}</li>
+        <li mat-list-item>Age: {{ car.age }}</li>
+        <li mat-list-item>Price: {{ car.price }}</li>
+        <li mat-list-item>Owner: {{ car.ownerAddr }}</li>
+        <li mat-list-item>Renter: {{ car.renterAddr }}</li>
+    </ul>
+</mat-dialog-content>
+  
+<mat-dialog-actions>
+  <button mat-button color="primary" (click)="onRent()">Rent</button>
+  <button mat-button color="primary" (click)="onReturn()">Return</button>
+  <button mat-button mat-dialog-close color="warn">Close</button>
+</mat-dialog-actions>

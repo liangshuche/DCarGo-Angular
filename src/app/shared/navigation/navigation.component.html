@@ -1,0 +1,38 @@
+<mat-toolbar class="toolbar" color="primary">
+    <mat-toolbar-row>
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+
+      <button type="button" mat-icon-button routerLink="/">
+        <mat-icon>home</mat-icon>
+      </button>
+      
+      <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs>
+        <button type="button" mat-icon-button>
+          <mat-icon>person_outline</mat-icon>
+        </button>
+        <button type="button" mat-icon-button>
+          <mat-icon>check</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <mat-sidenav-container>
+    <mat-sidenav class="sidenav" #drawer mode="push" role="navigation" [autoFocus]="false">
+      <mat-nav-list>
+        <h3>DCarGo</h3>
+        <mat-divider></mat-divider>
+        <a mat-list-item routerLink='/cars' routerLinkActive="active" (click)="drawer.close()">Browse All Cars</a>
+        <a mat-list-item routerLink='/rent-out' routerLinkActive="active" (click)="drawer.close()">Rent Out My Car</a>
+          
+        <a mat-list-item routerLink='/user' routerlinkActive="active" (click)="drawer.close()"><mat-icon>person_outline</mat-icon>Account</a>
+        <a mat-list-item routerLink='/' routerlinkActive="active" (click)="drawer.close()"><mat-icon>settings</mat-icon>Settings</a>
+        <a mat-list-item routerLink='/' routerlinkActive="active" (click)="drawer.close()"><mat-icon>help_outline</mat-icon>Help</a>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content class="sidenav-content">
+        
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>

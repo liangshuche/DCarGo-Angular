@@ -1,0 +1,23 @@
+<div class="container">
+    <mat-card class="example-card">
+        <mat-card-header>
+          <div mat-card-avatar><mat-icon>directions_car</mat-icon></div>
+          <mat-card-title>{{ car.name }}</mat-card-title>
+          <mat-card-subtitle>{{ car.type }}</mat-card-subtitle>
+        </mat-card-header>
+        <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+        <mat-card-content>
+          <ul>
+            <li mat-list-item>Info: {{ car.info }}</li>
+            <li mat-list-item>Age: {{ car.age }}</li>
+            <li mat-list-item>Price: {{ car.price }}</li>
+            <li mat-list-item>Owner: {{ car.ownerAddr }}</li>
+            <li mat-list-item>Renter: {{ car.renterAddr }}</li>
+          </ul>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" (click)="onRent()">Rent</button>
+          <button mat-raised-button color="primary" (click)="onReturn()">Return</button>
+        </mat-card-actions>
+      </mat-card>
+</div>
