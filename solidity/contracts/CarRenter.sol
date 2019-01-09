@@ -13,21 +13,27 @@ contract CarRenter is Ownable {
         _;
     }
 
-    event NewCar(uint carId, string name, string info);
-    event CarCrash(uint carId);
+    // event NewCar(uint carId, string name, string info);
+    event NewCar(Car i);
+    event CarCrash(uint carId_a, uint carId_b);
+    event CarMove(uint carId, uint new_X, uint new_Y);
+    event RentCar(uint carId, string owner, string renter);
+    event ReturnCar(uint carId, string owner);
 
     struct Car {
         string name;
-        string info;
-        string cartype;
-        uint age;     // 車齡
-        uint price;
-        // uint rentTime;
-        // uint period;
-        uint xlocate;
-        uint ylocate;
-        uint _id;
-        uint oil;
+        // string info;
+        // string ownername;
+        // string rentername;
+        uint8 cartype;   // 0~4
+        uint8 age;
+        uint8 oil;
+        uint8 damage;    // 0~100
+        uint16 xlocate;
+        uint16 ylocate;
+        uint16 price;
+        uint16 _id;
+        uint rentTime;
         address owner;
         address renter;
     }
@@ -38,21 +44,21 @@ contract CarRenter is Ownable {
     mapping (uint => address) public carToOwner;
     mapping (address => uint) ownerCarCount;
     mapping (address => string) addressToName;
-    mapping (string => uint) typeToOil;
-    mapping (string => uint) typeToCapacity;
+    mapping (uint8 => uint8) typeToOil;
+    mapping (uint8 => uint8) typeToCapacity;
     
     function initOiltype() internal {
-        typeToCapacity["小客車"] = 30;
-        typeToCapacity["跑車"] = 60;
-        typeToCapacity["休旅車"] = 60;
-        typeToCapacity["大卡車"] = 150;
-        typeToCapacity["坦克車"] = 200;
+        typeToCapacity[0] = 30;      // 小客車
+        typeToCapacity[1] = 60;      // 跑車
+        typeToCapacity[2] = 60;      // 休旅車
+        typeToCapacity[3] = 150;     // 大卡車
+        typeToCapacity[4] = 200;     // 坦克車
 
-        typeToOil["小客車"] = 20;
-        typeToOil["跑車"] = 10;
-        typeToOil["休旅車"] = 12;
-        typeToOil["大卡車"] = 8;
-        typeToOil["坦克車"] = 1;
+        typeToOil[0] = 20;
+        typeToOil[1] = 10;
+        typeToOil[2] = 12;
+        typeToOil[3] = 8;
+        typeToOil[4] = 1;
     }
 
 
@@ -60,17 +66,19 @@ contract CarRenter is Ownable {
         return (cars[id].renter != cars[id].owner);
     }
     
-    function addCar(string memory _name, string memory _info, string memory _type, uint _age, uint _price, uint x_loc, uint y_loc) public {
+    function addCar(string memory _name, uint8 _type, uint8 _age, uint16 _price, uint16 x_loc, uint16 y_loc) public {
         // Car memory newCar = Car("hi", "asdf", 21, 0, 0, 0, msg.sender, msg.sender, 0);
         // cars.push(newCar);
         initOiltype();
-        uint oil_capacity = typeToOil[_type];
-        uint id = cars.push(Car(_name, _info, _type, _age, _price, x_loc, y_loc, 0, oil_capacity, msg.sender, msg.sender)) - 1;
+        uint8 oil_capacity = typeToOil[_type];
+        Car memory newCar = Car(_name, _type, _age, oil_capacity, 0, x_loc, y_loc, _price, 0, now, msg.sender, msg.sender);
+        uint id = cars.push(newCar) - 1;
         carToOwner[id] = msg.sender;
-        cars[id]._id = id;
+        cars[id]._id = uint16(id);
         ownerCarCount[msg.sender] = ownerCarCount[msg.sender].add(1);
         car_count += 1;
-        emit NewCar(id, _name, _info);
+        // emit NewCar(id, _name, _info);
+        emit NewCar(newCar);
     }
 
     function getAllCars() external view returns(Car[]) {
@@ -86,18 +94,21 @@ contract CarRenter is Ownable {
         return addressToName[addr];
     }
 
-    function getInfoByID(uint id) external view returns(string) {
-        return cars[id].info;
-    }
+    // function getInfoByID(uint id) external view returns(string) {
+    //     return cars[id].info;
+    // }
+
     function getLength() external view returns(uint) {
         return car_count;
     }
     function rentCar(uint id) external payable {
         cars[id].renter = msg.sender;
         cars[id].owner.transfer(cars[id].price);
+        // emit RentCar(id);
     }
     function returnCar(uint id) external {
         cars[id].renter = cars[id].owner;
+        // emit ReturnCar(id);
     }
     function append(string a, string b, string c, string d, string e) internal pure returns (string) {
         return string(abi.encodePacked(a, b, c, d, e));
@@ -142,19 +153,20 @@ contract CarRenter is Ownable {
         }
         require(id1 != id2, "no car at same location !!");
 
-        if (id2==0) {
-            cars[id1].info = append(cars[id1].info, ", ", "Crash with Car # 0", "", "");
-        }
-        else{
-            cars[id1].info = append(cars[id1].info, ", ", "Crash with Car # ", uintToString(id2), "");
-        }
+        emit CarCrash(id1, id2);
+        // if (id2==0) {
+        //     cars[id1].info = append(cars[id1].info, ", ", "Crash with Car # 0", "", "");
+        // }
+        // else{
+        //     cars[id1].info = append(cars[id1].info, ", ", "Crash with Car # ", uintToString(id2), "");
+        // }
 
-        if (id1==0) {
-            cars[id2].info = append(cars[id2].info, ", ", "Crash with Car # 0", "", "");
-        }
-        else{
-            cars[id2].info = append(cars[id2].info, ", ", "Crash with Car # ", uintToString(id1), "");
-        }
+        // if (id1==0) {
+        //     cars[id2].info = append(cars[id2].info, ", ", "Crash with Car # 0", "", "");
+        // }
+        // else{
+        //     cars[id2].info = append(cars[id2].info, ", ", "Crash with Car # ", uintToString(id1), "");
+        // }
     }
     
 }

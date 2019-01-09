@@ -6,10 +6,10 @@ contract CarHelper is CarRenter {
     function changeName(uint _carId, string _newName) external onlyOwnerOf(_carId) {
         cars[_carId].name = _newName;
     }
-    function changeInfo(uint _carId, string _newInfo) external onlyOwnerOf(_carId) {
-        cars[_carId].info = _newInfo;
-    }
-    function changeAge(uint _carId, uint32 _newAge) external onlyOwnerOf(_carId) {
+    // function changeInfo(uint _carId, string _newInfo) external onlyOwnerOf(_carId) {
+    //     cars[_carId].info = _newInfo;
+    // }
+    function changeAge(uint _carId, uint8 _newAge) external onlyOwnerOf(_carId) {
         cars[_carId].age = _newAge;
     }
     // function changeRentaltime(uint _carId, uint32 _newRent) external onlyOwnerOf(_carId) {
@@ -23,19 +23,20 @@ contract CarHelper is CarRenter {
             z = (x / z + z) / 2;
         }
     }
-    function changeLocation(uint _carId, uint _newX, uint _newY) external onlyOwnerOf(_carId) {
+    function changeLocation(uint _carId, uint16 _newX, uint16 _newY) external onlyOwnerOf(_carId) {
 
         uint dist = (cars[_carId].xlocate - _newX) * (cars[_carId].xlocate - _newX) + (cars[_carId].ylocate - _newY) * (cars[_carId].ylocate - _newY);
         dist = sqrt(dist);
         cars[_carId].xlocate = _newX;
         cars[_carId].ylocate = _newY;
         // uint oil_used = uint(dist / typeToOil[cars[_carId].cartype]);
-        uint oil_used = uint(dist / 100);
+        uint8 oil_used = uint8(dist / 100);
         if (cars[_carId].oil < oil_used) {
             cars[_carId].oil = 0;
         }
         require(cars[_carId].oil > 0, "Run out of oil");
         cars[_carId].oil = cars[_carId].oil - oil_used;
+        emit CarMove(_carId, _newX, _newY);
     }
     function getCarByOwner(address _owner) external view returns(uint[]) {
         uint[] memory result = new uint[](ownerCarCount[_owner]);

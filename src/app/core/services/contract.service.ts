@@ -18,7 +18,7 @@ const tokenAbi = require('../contracts/contract-abi.json');
 export class ContractService {
   private web3: Web3;
   private contract: any;
-  private contractAddress: string = '0xe43d15beaca390581a5c1f898805dd0bc30fe0a6';
+  private contractAddress: string = '0x9ddabda19e4fbfa637eba98d032f5f4bca73b606';
   private currentAddress: string;
   private currentName: string;
   private spinnerRef: MatDialogRef<SpinnerComponent>;
@@ -29,11 +29,24 @@ export class ContractService {
       this.web3 = new Web3(window.web3.currentProvider);
       console.log(this.web3);
     } else {
-      // this.web3Provider = new Web3.providers.HttpProvider('')
+      // this.web3Provider =b new Web3.providers.HttpProvider('')
       console.log('error');
     }
 
     this.contract = new this.web3.eth.Contract(tokenAbi, this.contractAddress);
+    this.contract.events.NewCar(function(error, result) {
+        console.log(result);
+    });
+
+    const car: CarModel = {
+        name: '123',
+        type: 0,
+        age: 3,
+        price: 1253,
+        xLocate: 0,
+        yLocate: 0
+    }
+    this.rentOutCar(car).subscribe();
   }
 
 // ###################### GETTER ######################
@@ -147,7 +160,7 @@ export class ContractService {
         return this.getcurrentAddress().pipe(
             tap((address) => { this.presentSpinner(); console.log(address); }),
             mergeMap((address) => {
-                return from(this.contract.methods.addCar(car.name, car.info, car.type, car.age, car.price, 0, 0).send({from: address}));
+                return from(this.contract.methods.addCar(car.name, car.type, car.age, car.price, 0, 0).send({from: address}));
             }),
             tap(() => this.spinnerRef.close()),
             catchError((err) => {
