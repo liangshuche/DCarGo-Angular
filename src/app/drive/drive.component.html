@@ -1,3 +1,34 @@
-<p>
-  drive works!
-</p>
+<div class="container" fxLayout="row" fxLayoutAlign="start stretch" fxFill>
+  <div fxFlex="7 1 auto">
+    <agm-map #map [latitude]="25.019312" [longitude]="121.542274" [streetViewControl]="false" [zoom]="14" (mapRightClick)="onClickMap($event)">
+      <!-- <agm-marker  animation="DROP" [latitude]="targetLatitude" [longitude]="targetLongitude"> -->
+      <agm-marker [latitude]="targetLatitude" [longitude]="targetLongitude">
+        <agm-info-window>
+          <button mat-button (click)="onClickDrive()">Drive</button>
+          INFO
+        </agm-info-window>
+      </agm-marker>
+    </agm-map>
+  </div>
+  <div class="card-container" fxFlex="3 0 auto">
+
+    
+    <mat-card class="card">
+      <mat-card-header>
+        <div mat-card-avatar><mat-icon>directions_car</mat-icon></div>
+        <mat-card-title>something</mat-card-title>
+        <mat-card-subtitle>another thing</mat-card-subtitle>
+      </mat-card-header>
+      <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+      <mat-card-content>
+        <ul>
+          <li mat-list-item>Name</li>
+          <li mat-list-item>location</li>
+        </ul>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button (click)="onClickCar(car.id)">Detail</button>
+      </mat-card-actions>
+    </mat-card>  
+  </div>
+</div>

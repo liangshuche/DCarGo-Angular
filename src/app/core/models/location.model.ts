@@ -1,6 +1,6 @@
 export class LocationModel {
-    id: number;
-    name: string;
-    latitude: number;
-    longitude: number;
+    intLatitude: number;
+    intLongitude: number;
+    geolatitude: number;
+    geolongitude: number;
 }

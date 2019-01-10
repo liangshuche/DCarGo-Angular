@@ -1,0 +1,16 @@
+agm-map {
+    height: calc(100vh - 150px);
+    margin: 20px;
+}
+
+// .card {
+//     margin: 10px;
+// }
+.card {
+    margin-bottom: 10px;
+}
+.card-container {
+    margin: 20px;
+    overflow-y: auto;
+    height: calc(100vh - 90);
+}
