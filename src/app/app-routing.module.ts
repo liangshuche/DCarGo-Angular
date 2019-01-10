@@ -5,6 +5,7 @@ import { CarRegisterComponent } from './car-register/car-register.component';
 import { UserComponent } from './user/user.component';
 import { CarListComponent } from './car-list/car-list.component';
 import { CarDetailComponent } from './car-list/car-detail/car-detail.component';
+import { DriveComponent } from './drive/drive.component';
 
 const routes: Routes = [
   { path: '', component: HomepageComponent},
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'cars/:id', component: CarDetailComponent},
   { path: 'rent-out', component: CarRegisterComponent },
   { path: 'user', component: UserComponent },
+  { path: 'drive', component: DriveComponent }
   // { path: '', redirectTo: '/recipes', pathMatch: 'full' },
   // { path: 'recipes', component: RecipesComponent, children: [
     // { path: '', component: RecipeStartComponent },

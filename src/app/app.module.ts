@@ -33,6 +33,7 @@ import { RegisterPopoverComponent } from './user/register-popover/register-popov
 import { SpinnerComponent } from './shared/spinner/spinner.component';
 import { CarDetailComponent } from './car-list/car-detail/car-detail.component';
 import { CarDetailPopoverComponent } from './car-list/car-detail-popover/car-detail-popover.component';
+import { DriveComponent } from './drive/drive.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { CarDetailPopoverComponent } from './car-list/car-detail-popover/car-det
     SpinnerComponent,
     CarDetailComponent,
     CarDetailPopoverComponent,
+    DriveComponent,
     // NavComponent
   ],
   imports: [
@@ -71,7 +73,8 @@ import { CarDetailPopoverComponent } from './car-list/car-detail-popover/car-det
     MatTabsModule,
     MatRadioModule,
     AgmCoreModule.forRoot({
-      apiKey: null
+      apiKey: null,
+      language: 'zh-TW'
     })
   ],
   entryComponents: [

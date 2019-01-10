@@ -21,14 +21,13 @@
   <mat-sidenav-container>
     <mat-sidenav class="sidenav" #drawer mode="push" role="navigation" [autoFocus]="false">
       <mat-nav-list>
-        <h3>DCarGo</h3>
+        <h1>DCarGo</h1>
         <mat-divider></mat-divider>
-        <a mat-list-item routerLink='/cars' routerLinkActive="active" (click)="drawer.close()">Browse All Cars</a>
-        <a mat-list-item routerLink='/rent-out' routerLinkActive="active" (click)="drawer.close()">Rent Out My Car</a>
-          
-        <a mat-list-item routerLink='/user' routerlinkActive="active" (click)="drawer.close()"><mat-icon>person_outline</mat-icon>Account</a>
-        <a mat-list-item routerLink='/' routerlinkActive="active" (click)="drawer.close()"><mat-icon>settings</mat-icon>Settings</a>
-        <a mat-list-item routerLink='/' routerlinkActive="active" (click)="drawer.close()"><mat-icon>help_outline</mat-icon>Help</a>
+        <a mat-list-item routerLink='/cars' routerLinkActive="active" (click)="drawer.close()"><mat-icon class="list-icon">view_list</mat-icon>Browse All Cars</a>
+        <a mat-list-item routerLink='/rent-out' routerLinkActive="active" (click)="drawer.close()"><mat-icon class="list-icon">add_circle_outline</mat-icon>Rent Out My Car</a>       
+        <a mat-list-item routerLink='/user' routerlinkActive="active" (click)="drawer.close()"><mat-icon class="list-icon">person_outline</mat-icon>Account</a>
+        <a mat-list-item routerLink='/drive' routerlinkActive="active" (click)="drawer.close()"><mat-icon class="list-icon">drive_eta</mat-icon>Drive</a>
+        <a mat-list-item routerLink='/' routerlinkActive="active" (click)="drawer.close()"><mat-icon class="list-icon">help_outline</mat-icon>Help</a>
       </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content class="sidenav-content">

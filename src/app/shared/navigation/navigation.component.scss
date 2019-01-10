@@ -12,11 +12,20 @@
 }
 
 .sidenav {
-    width: 200px;
+    width: 300px;
     height: calc(100vh - 70px);
 }
 
 .sidenav-content {
     height: calc(100vh - 70px);
     overflow-y: scroll;
+}
+
+.list-icon {
+    margin-right: 8px;
+}
+
+.mat-list-item {
+    height: 22px;
+    font-size: 18px;
 }
