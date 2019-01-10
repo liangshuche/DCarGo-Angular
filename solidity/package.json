@@ -8,6 +8,6 @@
   "private": true,
   "dependencies": {
     "truffle": "^5.0.1",
-    "truffle-hdwallet-provider": "github:trufflesuite/truffle-hdwallet-provider",
+    "truffle-hdwallet-provider": "github:trufflesuite/truffle-hdwallet-provider"
   }
 }
