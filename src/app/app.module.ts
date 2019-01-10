@@ -16,7 +16,8 @@ import {
   MatListModule,
   MatDialogModule,
   MatCardModule,
-  MatTabsModule} from '@angular/material';
+  MatTabsModule,
+  MatRadioModule } from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AgmCoreModule } from '@agm/core';
 
@@ -68,6 +69,7 @@ import { CarDetailPopoverComponent } from './car-list/car-detail-popover/car-det
     MatListModule,
     MatCardModule,
     MatTabsModule,
+    MatRadioModule,
     AgmCoreModule.forRoot({
       apiKey: null
     })

@@ -38,6 +38,7 @@ export class CarListComponent implements OnInit {
   lat: number = 51.678418;
   lng: number = 7.809007;
   carArray: CarModel[] = [];
+  filter: string = 'all';
   constructor(
     private dialog: MatDialog,
     private contractService: ContractService,
@@ -68,6 +69,16 @@ export class CarListComponent implements OnInit {
     // ).subscribe(() => {
     //   this.updateUser();
     // });
+  }
+
+  shouldDisplay(car: CarModel): boolean {
+    if (this.filter === 'all') {
+      return true;
+    } else if (this.filter === 'available') {
+      return false;
+    } else {
+      return false;
+    }
   }
 
 }

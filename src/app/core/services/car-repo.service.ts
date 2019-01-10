@@ -36,7 +36,7 @@ export class CarRepoService {
     this.contractService.getNumCars().pipe(
       mergeMap((number) => range(0, number)),
       mergeMap((idx) => {
-        console.log(idx);
+        // console.log(idx);
         return this.contractService.getCarByIdx(idx);
       }),
       map((car) => this.carArray.push(car))
