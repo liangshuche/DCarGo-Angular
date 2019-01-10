@@ -4,14 +4,14 @@
         <mat-label>車輛型號</mat-label>
         <input matInput placeholder="" [(ngModel)]="carInput.name">
     </mat-form-field>
-    <mat-form-field appearance="outline">
+    <!-- <mat-form-field appearance="outline">
         <mat-label>詳細資料</mat-label>
         <input matInput placeholder="" [(ngModel)]="carInput.info">
-    </mat-form-field>
+    </mat-form-field> -->
     <mat-form-field appearance="outline">
         <mat-label>車輛類別</mat-label>
         <mat-select placeholder="類別" [(ngModel)]="carInput.type">
-            <mat-option *ngFor="let type of carTypeOptions" [value]="type">{{ type }}</mat-option>
+            <mat-option *ngFor="let type of carTypeOptions; let i = index" [value]="i">{{ type }}</mat-option>
         </mat-select>
         <!-- <input matInput placeholder="Placeholder" [(ngModel)]="carInput.type"> -->
     </mat-form-field>

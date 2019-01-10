@@ -14,7 +14,7 @@ contract CarRenter is Ownable {
     }
 
     // event NewCar(uint carId, string name, string info);
-    event NewCar(Car i);
+    event NewCar(uint idx);
     event CarCrash(uint carId_a, uint carId_b);
     event CarMove(uint carId, uint new_X, uint new_Y);
     event RentCar(uint carId, string owner, string renter);
@@ -77,8 +77,8 @@ contract CarRenter is Ownable {
         cars[id]._id = uint16(id);
         ownerCarCount[msg.sender] = ownerCarCount[msg.sender].add(1);
         car_count += 1;
-        // emit NewCar(id, _name, _info);
-        emit NewCar(newCar);
+        // emit NewCar(id, _name, "123");
+        emit NewCar(id);
     }
 
     function getAllCars() external view returns(Car[]) {

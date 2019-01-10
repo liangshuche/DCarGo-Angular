@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CarRepoService } from 'src/app/core/services/car-repo.service';
 
 @Component({
   selector: 'app-navigation',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavigationComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private carRepoService: CarRepoService
+  ) { }
 
   ngOnInit() {
+    this.carRepoService.updateCars();
   }
 
 }

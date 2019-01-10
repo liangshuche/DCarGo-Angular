@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import * as Web3 from 'web3';
-import { Observable, from, of, merge } from 'rxjs';
+import Web3 from 'web3';
+import { Observable, from, of, merge, Subject } from 'rxjs';
 import { map, tap, mergeMap, catchError } from 'rxjs/operators';
 import { CarModel } from '../models/car.model';
 import { CarTypeEnum } from '../enums/car-type.enum';
@@ -10,7 +10,7 @@ import { SpinnerComponent } from 'src/app/shared/spinner/spinner.component';
 declare let require: any;
 declare let window: any;
 
-const tokenAbi = require('../contracts/contract-abi.json');
+const tokenAbi = require('../../../../solidity/build/ABI.json');
 
 @Injectable({
   providedIn: 'root'
@@ -18,10 +18,13 @@ const tokenAbi = require('../contracts/contract-abi.json');
 export class ContractService {
   private web3: Web3;
   private contract: any;
-  private contractAddress: string = '0x9ddabda19e4fbfa637eba98d032f5f4bca73b606';
+  private contractAddress: string = '0x4369d6715dec2ad757249ea0f9b59281e472a8b1';
   private currentAddress: string;
   private currentName: string;
   private spinnerRef: MatDialogRef<SpinnerComponent>;
+
+  private addCarSubject: Subject<number>;
+
   constructor(
     private dialog: MatDialog
   ) {
@@ -32,22 +35,20 @@ export class ContractService {
       // this.web3Provider =b new Web3.providers.HttpProvider('')
       console.log('error');
     }
-
+    this.addCarSubject = new Subject<number>();
     this.contract = new this.web3.eth.Contract(tokenAbi, this.contractAddress);
-    this.contract.events.NewCar(function(error, result) {
-        console.log(result);
+    this.contract.events.NewCar((error, result) => {
+        console.log(result.returnValues);
+        this.addCarSubject.next(result.returnValues.idx);
     });
 
-    const car: CarModel = {
-        name: '123',
-        type: 0,
-        age: 3,
-        price: 1253,
-        xLocate: 0,
-        yLocate: 0
-    }
-    this.rentOutCar(car).subscribe();
   }
+
+// #################### Observables ###################
+
+    onAddCar(): Observable<number> {
+        return this.addCarSubject.asObservable();
+    }
 
 // ###################### GETTER ######################
 
@@ -88,7 +89,6 @@ export class ContractService {
             map((result: any) => {
                 return {
                     name: result.name,
-                    info: result.info,
                     type: result.type,
                     age: result.age,
                     price: result.price,
@@ -157,6 +157,7 @@ export class ContractService {
     }
 
     rentOutCar(car: CarModel): Observable<string> {
+        console.log(car);
         return this.getcurrentAddress().pipe(
             tap((address) => { this.presentSpinner(); console.log(address); }),
             mergeMap((address) => {
