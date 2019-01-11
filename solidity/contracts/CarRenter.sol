@@ -101,9 +101,20 @@ contract CarRenter is Ownable {
     function getLength() external view returns(uint) {
         return car_count;
     }
-    function rentCar(uint id) external payable {
-        cars[id].renter = msg.sender;
-        cars[id].owner.transfer(cars[id].price);
+    function () payable{
+
+    }
+    function get_balance() public view returns (uint256){
+        return address(this).balance;
+    }
+    
+    function rentCar(uint id) payable {
+        //if(cars[id].owner.send(cars[id].price)){
+            msg.sender.transfer(1 * 1 ether);
+            //cars[id].owner.call.value(cars[id].price*100000000000000).gas(20317)();
+            //cars[id].renter = msg.sender;
+        //}
+        // cars[id].owner.transfer(cars[id].price);
         // emit RentCar(id);
     }
     function returnCar(uint id) external {
