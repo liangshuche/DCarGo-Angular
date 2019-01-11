@@ -107,17 +107,18 @@ contract CarRenter is Ownable {
     function get_balance() public view returns (uint256){
         return address(this).balance;
     }
-    
     function rentCar(uint id) payable {
-        //if(cars[id].owner.send(cars[id].price)){
-            msg.sender.transfer(1 * 1 ether);
-            //cars[id].owner.call.value(cars[id].price*100000000000000).gas(20317)();
-            //cars[id].renter = msg.sender;
-        //}
-        // cars[id].owner.transfer(cars[id].price);
-        // emit RentCar(id);
+            (cars[id].owner).transfer(cars[id].price * 1 ether);
+            cars[id].renter = msg.sender;
     }
-    function returnCar(uint id) external {
+    function returnCar(uint id) payable {
+        
+        if(cars[id].damage != 0){
+            cars[id].owner.transfer(cars[id].price * 1 ether);
+        }
+        else{
+            cars[id].renter.transfer(cars[id].price * 1 ether);
+        }
         cars[id].renter = cars[id].owner;
         // emit ReturnCar(id);
     }
@@ -163,7 +164,8 @@ contract CarRenter is Ownable {
             }
         }
         require(id1 != id2, "no car at same location !!");
-
+        cars[id1].damage = 60;
+        cars[id2].damage = 60;
         emit CarCrash(id1, id2);
         // if (id2==0) {
         //     cars[id1].info = append(cars[id1].info, ", ", "Crash with Car # 0", "", "");

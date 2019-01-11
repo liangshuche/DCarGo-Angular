@@ -15,6 +15,9 @@ contract CarHelper is CarRenter {
     // function changeRentaltime(uint _carId, uint32 _newRent) external onlyOwnerOf(_carId) {
     //     cars[_carId].rentTime = _newRent;
     // }
+    function repair(uint id) external{
+        cars[id].damage = 0;
+    }
     function sqrt(uint x) returns (uint y) {
         uint z = (x + 1) / 2;
         y = x;
