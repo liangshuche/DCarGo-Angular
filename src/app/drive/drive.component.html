@@ -2,7 +2,7 @@
   <div fxFlex="7 1 auto">
     <agm-map #map [latitude]="25.019312" [longitude]="121.542274" [streetViewControl]="false" [zoom]="14" (mapRightClick)="onClickMap($event)">
       <!-- <agm-marker  animation="DROP" [latitude]="targetLatitude" [longitude]="targetLongitude"> -->
-      <agm-marker [latitude]="targetLatitude" [longitude]="targetLongitude">
+      <agm-marker [latitude]="targetLocation.geoLatitude" [longitude]="targetLocation.geoLongitude">
         <agm-info-window>
           <button mat-button (click)="onClickDrive()">Drive</button>
           INFO

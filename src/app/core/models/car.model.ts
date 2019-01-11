@@ -1,11 +1,12 @@
+import { LocationModel } from './location.model';
+
 export class CarModel {
     name: string;
     // info: string;
     type: number;
     age: number;
     price: number;
-    xLocate: number;
-    yLocate: number;
+    location: LocationModel;
     id: number;
     oil: number;
     damage: number;

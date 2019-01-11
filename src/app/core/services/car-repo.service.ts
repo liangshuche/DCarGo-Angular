@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, range } from 'rxjs';
 import { CarModel } from '../models/car.model';
 import { ContractService } from './contract.service';
-import { mergeMap, map } from 'rxjs/operators';
+import { mergeMap, map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -32,15 +32,17 @@ export class CarRepoService {
     });
   }
   updateCars() {
-    this.carArray = [];
+    const tmpCarArray: CarModel[] = [];
+    // this.carArray = [];
     this.contractService.getNumCars().pipe(
       mergeMap((number) => range(0, number)),
       mergeMap((idx) => {
         // console.log(idx);
         return this.contractService.getCarByIdx(idx);
       }),
-      map((car) => this.carArray.push(car))
+      map((car) => tmpCarArray.push(car))
     ).subscribe(() => {
+      this.carArray = tmpCarArray;
       this.carArray$.next(this.carArray);
     });
   }

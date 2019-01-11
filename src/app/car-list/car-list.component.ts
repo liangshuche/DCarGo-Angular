@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CarModel } from '../core/models/car.model';
 import { ContractService } from '../core/services/contract.service';
 import { map, mergeMap } from 'rxjs/operators';
@@ -8,6 +8,8 @@ import { LocationModel } from '../core/models/location.model';
 import { MatDialog } from '@angular/material';
 import { CarDetailComponent } from './car-detail/car-detail.component';
 import { CarDetailPopoverComponent } from './car-detail-popover/car-detail-popover.component';
+import { LocationService } from '../core/services/location.service';
+import { MarkerManager } from '@agm/core';
 
 @Component({
   selector: 'app-car-list',
@@ -15,26 +17,6 @@ import { CarDetailPopoverComponent } from './car-detail-popover/car-detail-popov
   styleUrls: ['./car-list.component.scss']
 })
 export class CarListComponent implements OnInit {
-  carLocations: LocationModel[] = [
-    {
-      id: 0,
-      name: 'first car',
-      latitude: 25.0159782,
-      longitude: 121.5396341
-    },
-    {
-      id: 1,
-      name: 'second car',
-      latitude: 25.016000,
-      longitude: 121.540000
-    },
-    {
-      id: 2,
-      name: 'third car',
-      latitude: 25.015800,
-      longitude: 121.538000
-    }
-  ];
   lat: number = 51.678418;
   lng: number = 7.809007;
   carArray: CarModel[] = [];
@@ -42,7 +24,10 @@ export class CarListComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private contractService: ContractService,
-    private carRepoService: CarRepoService
+    private carRepoService: CarRepoService,
+    private locationSerivce: LocationService,
+    private ref: ChangeDetectorRef,
+    // private markerManager: MarkerManager,
   ) { }
 
   ngOnInit() {

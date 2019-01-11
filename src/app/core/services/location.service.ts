@@ -18,19 +18,31 @@ export class LocationService {
 
   constructor() { }
 
-  intToGeo(location: LocationModel) {
-    if (location.intLatitude > 0 && location.intLatitude < this.numSteps &&
-        location.intLongitude > 0 && location.intLongitude < this.numSteps) {
-      location.geolatitude = this.originLatitude + location.intLatitude * this.latitudeStep;
-      location.geolongitude = this.originLongitude + location.intLongitude * this.longitudeStep;
-    }
+  createLocation(xLocate: number, yLocate: number): LocationModel {
+    const location: LocationModel = {
+      intLatitude: yLocate,
+      intLongitude: xLocate,
+      geoLatitude: 0,
+      geoLongitude: 0
+    };
+    return this.intToGeo(location);
   }
 
-  geoToInt(location: LocationModel) {
-    if (location.geolatitude > this.originLatitude && location.geolatitude < this.latitudeBoundary &&
-        location.geolongitude > this.originLongitude && location.geolongitude < this.longitudeBoundary) {
-      location.intLatitude = Math.round((location.geolatitude - this.originLatitude) / this.latitudeStep);
-      location.intLongitude = Math.round((location.geolongitude - this.originLongitude) / this.longitudeStep);
+  intToGeo(location: LocationModel): LocationModel {
+    if (location.intLatitude >= 0 && location.intLatitude < this.numSteps &&
+        location.intLongitude >= 0 && location.intLongitude < this.numSteps) {
+      location.geoLatitude = this.originLatitude + location.intLatitude * this.latitudeStep;
+      location.geoLongitude = this.originLongitude + location.intLongitude * this.longitudeStep;
     }
+    return location;
+  }
+
+  geoToInt(location: LocationModel): LocationModel {
+    if (location.geoLatitude >= this.originLatitude && location.geoLatitude < this.latitudeBoundary &&
+        location.geoLongitude >= this.originLongitude && location.geoLongitude < this.longitudeBoundary) {
+      location.intLatitude = Math.round((location.geoLatitude - this.originLatitude) / this.latitudeStep);
+      location.intLongitude = Math.round((location.geoLongitude - this.originLongitude) / this.longitudeStep);
+    }
+    return location;
   }
 }

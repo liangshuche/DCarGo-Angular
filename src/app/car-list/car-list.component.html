@@ -3,11 +3,12 @@
 
   <mat-tab-group mat-stretch-tabs>
     <mat-tab label="Map">
-      <agm-map [latitude]="carLocations[0].latitude" [longitude]="carLocations[0].longitude" [streetViewControl]="false" [zoom]="14">
-        <agm-marker *ngFor="let location of carLocations" [latitude]="location.latitude" [longitude]="location.longitude">
+      <agm-map [latitude]="24.996800" [longitude]="121.457000" [streetViewControl]="false" [zoom]="14" (mapClick)="onAdd()">
+        <!-- <agm-marker animation="DROP" *ngFor="let car of carArray" [latitude]="car.location.geoLatitude" [longitude]="car.location.geoLongitude"> -->
+        <agm-marker *ngFor="let car of carArray" [latitude]="car.location.geoLatitude" [longitude]="car.location.geoLongitude">
           <agm-info-window>
-            <button mat-button (click)="onClickDetail(location.id)">Detail</button>
-            {{ location.name }}
+            <button mat-button (click)="onClickDetail(car.id)">Detail</button>
+            {{ car.name }}
           </agm-info-window>
         </agm-marker>
       </agm-map>

@@ -6,6 +6,8 @@ import { CarModel } from '../models/car.model';
 import { CarTypeEnum } from '../enums/car-type.enum';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { SpinnerComponent } from 'src/app/shared/spinner/spinner.component';
+import { LocationModel } from '../models/location.model';
+import { LocationService } from './location.service';
 // import * as TruffleContract from 'truffle-contract';
 declare let require: any;
 declare let window: any;
@@ -18,7 +20,7 @@ const tokenAbi = require('../../../../solidity/build/ABI.json');
 export class ContractService {
   private web3: Web3;
   private contract: any;
-  private contractAddress: string = '0x4369d6715dec2ad757249ea0f9b59281e472a8b1';
+  private contractAddress: string = '0x666edfc5d701d5d4f7e633b1e7a095af3290f7fe';
   private currentAddress: string;
   private currentName: string;
   private spinnerRef: MatDialogRef<SpinnerComponent>;
@@ -26,7 +28,8 @@ export class ContractService {
   private addCarSubject: Subject<number>;
 
   constructor(
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private locationService: LocationService,
   ) {
     if (typeof window.web3) {
       this.web3 = new Web3(window.web3.currentProvider);
@@ -92,8 +95,7 @@ export class ContractService {
                     type: result.type,
                     age: result.age,
                     price: result.price,
-                    xLocate: result.xLocate,
-                    yLocate: result.yLocate,
+                    location: this.locationService.createLocation(parseInt(result.xlocate, 10), parseInt(result.ylocate, 10)),
                     id: idx,
                     oil: result.oil,
                     ownerAddr: result.owner,
