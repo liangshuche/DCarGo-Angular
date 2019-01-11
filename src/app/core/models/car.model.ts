@@ -3,7 +3,7 @@ import { LocationModel } from './location.model';
 export class CarModel {
     name: string;
     // info: string;
-    type: number;
+    type: string;
     age: number;
     price: number;
     location: LocationModel;
@@ -15,4 +15,5 @@ export class CarModel {
     ownerName: string;
     renterAddr: string;
     renterName: string;
+    rented: boolean;
 }

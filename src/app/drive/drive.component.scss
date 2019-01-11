@@ -14,3 +14,7 @@ agm-map {
     overflow-y: auto;
     height: calc(100vh - 90);
 }
+
+.selected {
+    background-color: lightgray;
+}

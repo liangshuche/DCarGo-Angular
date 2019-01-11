@@ -20,7 +20,7 @@ const tokenAbi = require('../../../../solidity/build/ABI.json');
 export class ContractService {
   private web3: Web3;
   private contract: any;
-  private contractAddress: string = '0x666edfc5d701d5d4f7e633b1e7a095af3290f7fe';
+  private contractAddress: string = '0xe43d15beaca390581a5c1f898805dd0bc30fe0a6';
   private currentAddress: string;
   private currentName: string;
   private spinnerRef: MatDialogRef<SpinnerComponent>;
@@ -92,14 +92,19 @@ export class ContractService {
             map((result: any) => {
                 return {
                     name: result.name,
-                    type: result.type,
+                    type: CarTypeEnum[parseInt(result.cartype, 10)],
                     age: result.age,
                     price: result.price,
                     location: this.locationService.createLocation(parseInt(result.xlocate, 10), parseInt(result.ylocate, 10)),
                     id: idx,
                     oil: result.oil,
+                    damage: result.damage,
+                    rentTime: result.rentTime,
                     ownerAddr: result.owner,
-                    renterAddr: result.renter
+                    ownerName: '',
+                    renterAddr: result.renter,
+                    renterName: '',
+                    rented: result.owner !== result.renter
                 } as CarModel;
             })
         );

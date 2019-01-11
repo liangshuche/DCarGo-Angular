@@ -26,7 +26,7 @@ export class CarRegisterComponent implements OnInit {
     }
 
     onRegister() {
-        if (this.carInput.name && this.carInput.type > -1 &&
+        if (this.carInput.name && CarTypeEnum[this.carInput.type] > -1 &&
             this.carInput.age && this.carInput.price &&
             this.carInput.age < 255 && this.carInput.price < 65535) {
             // this.carInput.xLocate = 0;
