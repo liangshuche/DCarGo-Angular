@@ -47,4 +47,13 @@ export class CarRepoService {
     });
   }
 
+  updateCarByIdx(idx: number) {
+    if (idx < this.carArray.length) {
+      this.contractService.getCarByIdx(idx).subscribe((car) => {
+        this.carArray[idx] = car;
+        this.carArray$.next(this.carArray);
+      });
+    }
+  }
+
 }

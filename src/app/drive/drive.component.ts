@@ -47,17 +47,18 @@ export class DriveComponent implements OnInit {
   }
 
   onClickMap(ev, info) {
-    console.log(ev);
-    console.log(info);
-    this.targetLocation.geoLatitude = ev.coords.lat;
-    this.targetLocation.geoLongitude = ev.coords.lng;
-    info.open();
-    // this.mapZoom = 20;
+    if (this.selectedIdx > -1) {
+      this.targetLocation.geoLatitude = ev.coords.lat;
+      this.targetLocation.geoLongitude = ev.coords.lng;
+      info.open();
+    }
   }
 
   onClickDrive() {
     this.targetLocation = this.locationService.geoToInt(this.targetLocation);
-    this.contractService.changeLocation(0, this.targetLocation.intLongitude, this.targetLocation.intLatitude).subscribe();
+    this.contractService.changeLocation(0, this.targetLocation.intLongitude, this.targetLocation.intLatitude).subscribe(() => {
+      this.carRepoService.updateCarByIdx(this.selectedIdx);
+    });
   }
 
   onClickList(i) {
@@ -65,7 +66,8 @@ export class DriveComponent implements OnInit {
     console.log(this.carArray[this.selectedIdx].location);
     this.mapLatitude = this.carArray[this.selectedIdx].location.geoLatitude;
     this.mapLongitude = this.carArray[this.selectedIdx].location.geoLongitude;
-    this.targetLocation = this.carArray[this.selectedIdx].location;
+    this.targetLocation.geoLatitude = this.carArray[this.selectedIdx].location.geoLatitude;
+    this.targetLocation.geoLongitude = this.carArray[this.selectedIdx].location.geoLongitude;
     this.mapZoom = 13;
   }
 
