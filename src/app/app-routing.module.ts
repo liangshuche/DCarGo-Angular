@@ -6,6 +6,7 @@ import { UserComponent } from './user/user.component';
 import { CarListComponent } from './car-list/car-list.component';
 import { CarDetailComponent } from './car-list/car-detail/car-detail.component';
 import { DriveComponent } from './drive/drive.component';
+import { CrashComponent } from './crash/crash.component';
 
 const routes: Routes = [
   { path: '', component: HomepageComponent},
@@ -14,7 +15,8 @@ const routes: Routes = [
   { path: 'cars/:id', component: CarDetailComponent},
   { path: 'rent-out', component: CarRegisterComponent },
   { path: 'user', component: UserComponent },
-  { path: 'drive', component: DriveComponent }
+  { path: 'drive', component: DriveComponent },
+  { path: 'crash', component: CrashComponent }
   // { path: '', redirectTo: '/recipes', pathMatch: 'full' },
   // { path: 'recipes', component: RecipesComponent, children: [
     // { path: '', component: RecipeStartComponent },

@@ -17,7 +17,8 @@ import {
   MatDialogModule,
   MatCardModule,
   MatTabsModule,
-  MatRadioModule } from '@angular/material';
+  MatRadioModule,
+  MatSnackBarModule } from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AgmCoreModule } from '@agm/core';
 
@@ -34,6 +35,7 @@ import { SpinnerComponent } from './shared/spinner/spinner.component';
 import { CarDetailComponent } from './car-list/car-detail/car-detail.component';
 import { CarDetailPopoverComponent } from './car-list/car-detail-popover/car-detail-popover.component';
 import { DriveComponent } from './drive/drive.component';
+import { CrashComponent } from './crash/crash.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +50,7 @@ import { DriveComponent } from './drive/drive.component';
     CarDetailComponent,
     CarDetailPopoverComponent,
     DriveComponent,
+    CrashComponent,
     // NavComponent
   ],
   imports: [
@@ -72,6 +75,7 @@ import { DriveComponent } from './drive/drive.component';
     MatCardModule,
     MatTabsModule,
     MatRadioModule,
+    MatSnackBarModule,
     AgmCoreModule.forRoot({
       apiKey: null,
       language: 'zh-TW'
