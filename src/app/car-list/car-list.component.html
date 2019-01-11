@@ -14,32 +14,43 @@
       </agm-map>
     </mat-tab>
     <mat-tab label="List">
-      <div style="height: 10px"></div>
-      <mat-radio-group class="radio-group" [(ngModel)]="filter">
-          <mat-radio-button class="radio-button" value="all">All</mat-radio-button>
-          <mat-radio-button class="radio-button" value="available">Available</mat-radio-button>
-          <mat-radio-button class="radio-button" value="rented-out">Rented Out</mat-radio-button>
-      </mat-radio-group>
-      <div *ngFor="let car of carArray">
-        <mat-card class="example-card" *ngIf="shouldDisplay(car)">
-          <mat-card-header>
-            <div mat-card-avatar><mat-icon>directions_car</mat-icon></div>
-            <mat-card-title>{{ car.name }}</mat-card-title>
-            <mat-card-subtitle>{{ car.type }}</mat-card-subtitle>
-          </mat-card-header>
-            <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
-            <mat-card-content>
-              <ul>
-                <li mat-list-item>Info: {{ car.info }}</li>
-                <li mat-list-item>Age: {{ car.age }}</li>
-                <li mat-list-item>Price: {{ car.price }}</li>
-                <li mat-list-item>Id: {{ car.id }}</li>
-              </ul>
-            </mat-card-content>
-              <mat-card-actions>
-                <button mat-raised-button (click)="onClickDetail(car.id)">Detail</button>
-            </mat-card-actions>
-        </mat-card>
+      <div class="tab-container">
+
+        <div style="height: 10px"></div>
+        <mat-radio-group class="radio-group" [(ngModel)]="filter">
+            <mat-radio-button class="radio-button" value="all">All</mat-radio-button>
+            <mat-radio-button class="radio-button" value="available">Available</mat-radio-button>
+            <mat-radio-button class="radio-button" value="rented-out">Rented Out</mat-radio-button>
+        </mat-radio-group>
+        <div fxLayout="row" fxLayoutAlign="start stretch" fxfill>
+          <div fxFlex="400px"  *ngFor="let car of carArray">
+            <mat-card class="example-card" *ngIf="shouldDisplay(car)">
+              <mat-card-header>
+                <div mat-card-avatar><mat-icon>directions_car</mat-icon></div>
+                <mat-card-title>{{ car.name }}</mat-card-title>
+                <mat-card-subtitle>{{ car.type }}</mat-card-subtitle>
+              </mat-card-header>
+                <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+                <mat-card-content>
+                  <h5>Condition: 123</h5>
+                  <h5>Car Age: {{ car.age }}</h5>
+                  <h5>Price: 100</h5>
+                  
+                  <!-- <div > -->
+                    <!-- <div fxflex="9 1 80%"> -->
+                     
+                    <!-- </div> -->
+                    <!-- <div fxflex="1 0 20%" style="margin-left: auto; margin-right: 0; vertical-align: middle; background: lightgray"> -->
+                    
+                    <!-- </div>   -->
+                  </mat-card-content>
+                  <mat-card-actions>
+                      <button class="detail-button" mat-button color="primary" (click)="onClickDetail(car.id)">&#60;Detail&#62;</button>
+                </mat-card-actions>
+            </mat-card>
+            
+          </div>
+      </div>
 
       </div>
     </mat-tab>

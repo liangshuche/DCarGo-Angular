@@ -2,12 +2,17 @@
     min-height: calc(100vh - 70px);
 }
 
+.tab-container {
+    height: calc(100vh - 150px);
+}
 .example-card {
     margin: auto;
     max-width: 80%;
     margin-top: 10px;
     margin-bottom: 10px;
 }
+
+
 
 agm-map {
     height: calc(100vh - 150px);
@@ -21,4 +26,14 @@ agm-map {
     display: block;
     margin: 0 auto;
     width: fit-content;
+}
+
+.content-container {
+    width: 50%;
+}
+
+.detail-button {
+    width: 100px;
+    margin: 0 auto;
+    text-align: center;
 }

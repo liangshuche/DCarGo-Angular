@@ -11,7 +11,8 @@ import { tap, mergeMap, map } from 'rxjs/operators';
 })
 export class UserComponent implements OnInit {
   userAddress: string;
-  userName: string;
+  userAddressStripped: string;
+  userName: string = '';
   constructor(
     private dialog: MatDialog,
     private contractService: ContractService
@@ -24,6 +25,7 @@ export class UserComponent implements OnInit {
   updateUser() {
     this.contractService.getcurrentAddress().subscribe((address) => {
       this.userAddress = address;
+      this.userAddressStripped = this.userAddress.substr(0, 16) + '...';
     });
 
     this.contractService.getCurrentName().subscribe((name) => {
