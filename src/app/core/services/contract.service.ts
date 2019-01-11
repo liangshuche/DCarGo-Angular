@@ -4,7 +4,7 @@ import { Observable, from, of, merge, Subject } from 'rxjs';
 import { map, tap, mergeMap, catchError } from 'rxjs/operators';
 import { CarModel } from '../models/car.model';
 import { CarTypeEnum } from '../enums/car-type.enum';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
 import { SpinnerComponent } from 'src/app/shared/spinner/spinner.component';
 import { LocationModel } from '../models/location.model';
 import { LocationService } from './location.service';
@@ -29,6 +29,7 @@ export class ContractService {
 
   constructor(
     private dialog: MatDialog,
+    private snackBar: MatSnackBar,
     private locationService: LocationService,
   ) {
     if (typeof window.web3) {
@@ -41,6 +42,9 @@ export class ContractService {
     this.addCarSubject = new Subject<number>();
     this.contract = new this.web3.eth.Contract(tokenAbi, this.contractAddress);
     this.contract.events.NewCar((error, result) => {
+        this.snackBar.open('New Car Added', 'Dismiss', {
+            duration: 2000,
+        });
         console.log(result.returnValues);
         this.addCarSubject.next(result.returnValues.idx);
     });
@@ -168,7 +172,7 @@ export class ContractService {
         return this.getcurrentAddress().pipe(
             tap((address) => { this.presentSpinner(); console.log(address); }),
             mergeMap((address) => {
-                return from(this.contract.methods.addCar(car.name, car.type, car.age, car.price, 0, 0).send({from: address}));
+                return from(this.contract.methods.addCar(car.name, CarTypeEnum[car.type], car.age, car.price, 0, 0).send({from: address}));
             }),
             tap(() => this.spinnerRef.close()),
             catchError((err) => {
