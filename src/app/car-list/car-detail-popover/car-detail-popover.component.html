@@ -1,20 +1,16 @@
-<h2 mat-dialog-title>
-  {{ car.name }}
-</h2>
-  
 <mat-dialog-content class="post-form">
-  <h3>{{ car.type }}</h3>
-    <ul>
-        <li mat-list-item>Info: {{ car.info }}</li>
-        <li mat-list-item>Age: {{ car.age }}</li>
-        <li mat-list-item>Price: {{ car.price }}</li>
-        <li mat-list-item>Owner: {{ car.ownerAddr }}</li>
-        <li mat-list-item>Renter: {{ car.renterAddr }}</li>
-    </ul>
+  <h3>{{ car.name }}</h3>
+  <h4>{{ car.type }}</h4>
+  <mat-divider></mat-divider>
+  <br>
+  <h5>Car Age: {{ car.age }}</h5>
+  <h5>Price: {{ car.price }}</h5>
+  <h5>Condition: {{ car.condition }}</h5>
+  <mat-slider [min]="0" [max]="100" [(ngModel)]="car.rentTime"></mat-slider>
 </mat-dialog-content>
   
 <mat-dialog-actions>
-  <button mat-button color="primary" (click)="onRent()">Rent</button>
-  <button mat-button color="primary" (click)="onReturn()">Return</button>
-  <button mat-button mat-dialog-close color="warn">Close</button>
+  <button mat-button color="primary" (click)="onRent()" [disabled]="car.ownerAddr === address || car.ownerAddr !== car.renterAddr">Rent</button>
+  <button mat-button color="primary" (click)="onReturn()" [disabled]="car.ownerAddr === address || car.renterAddr !== address">Return</button>
+  <button mat-button mat-dialog-close color="warn" style="margin-right: 0; margin-left: auto">Close</button>
 </mat-dialog-actions>

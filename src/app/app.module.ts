@@ -18,7 +18,8 @@ import {
   MatCardModule,
   MatTabsModule,
   MatRadioModule,
-  MatSnackBarModule } from '@angular/material';
+  MatSnackBarModule,
+  MatSliderModule } from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AgmCoreModule } from '@agm/core';
 
@@ -76,6 +77,7 @@ import { CrashComponent } from './crash/crash.component';
     MatTabsModule,
     MatRadioModule,
     MatSnackBarModule,
+    MatSliderModule,
     AgmCoreModule.forRoot({
       apiKey: null,
       language: 'zh-TW'

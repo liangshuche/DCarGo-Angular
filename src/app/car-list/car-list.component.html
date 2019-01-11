@@ -3,7 +3,7 @@
 
   <mat-tab-group mat-stretch-tabs>
     <mat-tab label="Map">
-      <agm-map [latitude]="24.996800" [longitude]="121.457000" [streetViewControl]="false" [zoom]="14" (mapClick)="onAdd()">
+      <agm-map [latitude]="25.019312" [longitude]="121.542274" [streetViewControl]="false" [zoom]="12">
         <!-- <agm-marker animation="DROP" *ngFor="let car of carArray" [latitude]="car.location.geoLatitude" [longitude]="car.location.geoLongitude"> -->
         <agm-marker *ngFor="let car of carArray" [latitude]="car.location.geoLatitude" [longitude]="car.location.geoLongitude">
           <agm-info-window>
@@ -22,34 +22,37 @@
             <mat-radio-button class="radio-button" value="available">Available</mat-radio-button>
             <mat-radio-button class="radio-button" value="rented-out">Rented Out</mat-radio-button>
         </mat-radio-group>
-        <div fxLayout="row" fxLayoutAlign="start stretch" fxfill>
-          <div fxFlex="400px"  *ngFor="let car of carArray">
-            <mat-card class="example-card" *ngIf="shouldDisplay(car)">
-              <mat-card-header>
-                <div mat-card-avatar><mat-icon>directions_car</mat-icon></div>
-                <mat-card-title>{{ car.name }}</mat-card-title>
-                <mat-card-subtitle>{{ car.type }}</mat-card-subtitle>
-              </mat-card-header>
-                <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
-                <mat-card-content>
-                  <h5>Condition: 123</h5>
-                  <h5>Car Age: {{ car.age }}</h5>
-                  <h5>Price: 100</h5>
-                  
-                  <!-- <div > -->
-                    <!-- <div fxflex="9 1 80%"> -->
-                     
-                    <!-- </div> -->
-                    <!-- <div fxflex="1 0 20%" style="margin-left: auto; margin-right: 0; vertical-align: middle; background: lightgray"> -->
-                    
-                    <!-- </div>   -->
+        <div fxLayout="row warp" fxLayoutAlign="space-around start">
+        <!-- <div fxLayout="row" fxLayoutAlign="space-around start" *ngFor="let car of carArray" fxFill> -->
+          <div fxFlex="400px" *ngFor="let car of carArray" fxFill>
+            <mat-card class="example-card" *ngIf="shouldDisplay(car)" style="width: 80%">
+              
+                <!-- <div fxflex="1 1 80%"> -->
+                  <mat-card-header>
+                    <div mat-card-avatar><mat-icon>directions_car</mat-icon></div>
+                    <mat-card-title>{{ car.name }}</mat-card-title>
+                    <mat-card-subtitle>{{ car.type }}</mat-card-subtitle>
+                  </mat-card-header>
+                  <mat-card-content>
+                      <mat-divider></mat-divider>
+                      <br>
+                      <h5>Condition: 123</h5>
+                      <h5>Car Age: {{ car.age }}</h5>
+                      <h5>Price: 100</h5>
                   </mat-card-content>
-                  <mat-card-actions>
-                      <button class="detail-button" mat-button color="primary" (click)="onClickDetail(car.id)">&#60;Detail&#62;</button>
-                </mat-card-actions>
+                  <mat-card-footer>
+                    <button class="detail-button" mat-button color="primary" (click)="onClickDetail(car.id)" style="width: 100%">Show Details</button>
+                  </mat-card-footer>
+                <!-- </div> -->
+                <!-- <div fxflex="1 0 100px" style="margin-left: auto; margin-right: 0; vertical-align: middle; background: lightgray"> -->
+                    <!-- <button class="detail-button" mat-button color="primary" (click)="onClickDetail(car.id)">&#60;Detail&#62;</button> -->
+                <!-- </div> -->
             </mat-card>
+          </div>  
+                  <!-- <mat-card-actions> -->
+                <!-- </mat-card-actions> -->
             
-          </div>
+          <!-- </div> -->
       </div>
 
       </div>

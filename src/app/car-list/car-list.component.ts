@@ -21,6 +21,7 @@ export class CarListComponent implements OnInit {
   lng: number = 7.809007;
   carArray: CarModel[] = [];
   filter: string = 'all';
+  address: string;
   constructor(
     private dialog: MatDialog,
     private contractService: ContractService,
@@ -35,6 +36,9 @@ export class CarListComponent implements OnInit {
     this.carRepoService.getAllCars().subscribe((cars) => {
       this.carArray = cars;
     });
+    this.contractService.getcurrentAddress().subscribe((address) => {
+      this.address = address;
+    });
   }
 
   onClickDetail(idx: number) {
@@ -43,8 +47,8 @@ export class CarListComponent implements OnInit {
         id: idx,
       },
       autoFocus: false,
-      width: '600px',
-      height: '400px',
+      // width: '600px',
+      // height: '400px',
     });
     // registerDialogRef.afterClosed().pipe(
     //   tap((name) => { console.log(name); }),

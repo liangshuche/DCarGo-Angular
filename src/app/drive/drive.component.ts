@@ -56,7 +56,10 @@ export class DriveComponent implements OnInit {
 
   onClickDrive() {
     this.targetLocation = this.locationService.geoToInt(this.targetLocation);
-    this.contractService.changeLocation(0, this.targetLocation.intLongitude, this.targetLocation.intLatitude).subscribe(() => {
+    this.contractService.changeLocation(
+      this.carArray[this.selectedIdx].id,
+      this.targetLocation.intLongitude,
+      this.targetLocation.intLatitude).subscribe(() => {
       this.carRepoService.updateCarByIdx(this.selectedIdx);
     });
   }
