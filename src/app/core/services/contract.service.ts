@@ -239,6 +239,21 @@ export class ContractService {
         );
     }
 
+    createCrash(id: number, damage: number): Observable<string> {
+        return this.getcurrentAddress().pipe(
+            tap((address) => { this.presentSpinner(); console.log(address); }),
+            mergeMap((address) => {
+                return from(this.contract.methods.createCrash(id).send({from: address}));
+            }),
+            tap(() => this.spinnerRef.close()),
+            catchError((err) => {
+                console.log(err);
+                this.spinnerRef.close();
+                return of(null);
+            })
+        );
+    }
+
 // ###################### Private ######################
 
     private presentSpinner() {

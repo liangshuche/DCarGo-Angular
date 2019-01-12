@@ -4,8 +4,8 @@ import { LocationModel } from '../core/models/location.model';
 import { LocationService } from '../core/services/location.service';
 import { CarModel } from '../core/models/car.model';
 import { CarRepoService } from '../core/services/car-repo.service';
-import { mergeMap } from 'rxjs/operators';
-import { zip } from 'rxjs';
+import { mergeMap, tap } from 'rxjs/operators';
+import { zip, of } from 'rxjs';
 
 @Component({
   selector: 'app-drive',
@@ -61,9 +61,17 @@ export class DriveComponent implements OnInit {
     this.contractService.changeLocation(
       this.carArray[this.selectedIdx].id,
       this.targetLocation.intLongitude,
-      this.targetLocation.intLatitude).subscribe(() => {
-      this.carRepoService.updateCarByIdx(this.selectedIdx);
-    });
+      this.targetLocation.intLatitude).pipe(
+        mergeMap(() => {
+          if (Math.random() < 0.5) {
+            return this.contractService.createCrash(this.carArray[this.selectedIdx].id, 100);
+          } else {
+            return of('');
+          }
+        })
+      ).subscribe(() => {
+        this.carRepoService.updateCarByIdx(this.selectedIdx);
+      });
   }
 
   onClickList(i) {
