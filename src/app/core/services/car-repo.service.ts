@@ -8,15 +8,19 @@ import { mergeMap, map, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class CarRepoService {
-  carArray: CarModel[];
+  carArray: CarModel[] = [];
   carArray$: BehaviorSubject<CarModel[]>;
 
   constructor(
     private contractService: ContractService
   ) {
+    this.updateCars();
     this.carArray$ = new BehaviorSubject<CarModel[]>([]);
     this.contractService.onAddCar().subscribe((idx) => {
       this.addCar(idx);
+    });
+    this.contractService.onUpdateCar().subscribe((idx) => {
+      this.updateCarByIdx(idx);
     });
   }
 

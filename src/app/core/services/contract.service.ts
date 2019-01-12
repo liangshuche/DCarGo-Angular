@@ -20,12 +20,13 @@ const tokenAbi = require('../../../../solidity/build/ABI.json');
 export class ContractService {
   private web3: Web3;
   private contract: any;
-  private contractAddress: string = '0xe43d15beaca390581a5c1f898805dd0bc30fe0a6';
+  private contractAddress: string = '0x6b0b9c3d7eabc3737c66e8925dfa917e87d9db5c';
   private currentAddress: string;
   private currentName: string;
   private spinnerRef: MatDialogRef<SpinnerComponent>;
 
   private addCarSubject: Subject<number>;
+  private updateCarSubject: Subject<number>;
 
   constructor(
     private dialog: MatDialog,
@@ -39,22 +40,39 @@ export class ContractService {
       // this.web3Provider =b new Web3.providers.HttpProvider('')
       console.log('error');
     }
+
     this.addCarSubject = new Subject<number>();
+    this.updateCarSubject = new Subject<number>();
+
     this.contract = new this.web3.eth.Contract(tokenAbi, this.contractAddress);
+
     this.contract.events.NewCar((error, result) => {
-        this.snackBar.open('New Car Added', 'Dismiss', {
-            duration: 2000,
+        this.addCarSubject.next(result.returnValues.idx);
+        this.delay(200).then(() => {
+            this.snackBar.open('New Car Added', 'Dismiss', {
+                duration: 2000,
+            });
         });
         console.log(result.returnValues);
-        this.addCarSubject.next(result.returnValues.idx);
     });
 
+    this.contract.events.RentCar((error, result) => {
+        this.updateCarSubject.next(result.returnValues.carId);
+        this.delay(100);
+        this.snackBar.open(result.returnValues.owner + '\'s car is rented by ' + result.returnValues.renter, 'Dismiss', {
+            duration: 2000,
+        });
+    });
   }
 
 // #################### Observables ###################
 
     onAddCar(): Observable<number> {
         return this.addCarSubject.asObservable();
+    }
+
+    onUpdateCar(): Observable<number> {
+        return this.updateCarSubject.asObservable();
     }
 
 // ###################### GETTER ######################
@@ -205,6 +223,10 @@ export class ContractService {
         this.spinnerRef = this.dialog.open(SpinnerComponent, {
             disableClose: true,
         });
+    }
+
+    private async delay(ms: number) {
+        await new Promise(resolve => setTimeout(() => resolve(), ms));
     }
 
 }

@@ -8,8 +8,8 @@ contract CarRenter is Ownable {
     using SafeMath for uint256;
     // using SafeMath32 for uint;
     using SafeMath16 for uint16;
-    modifier onlyOwnerOf(uint _zombieId) {
-        require(msg.sender == carToOwner[_zombieId]);
+    modifier onlyOwnerOf(uint _id) {
+        require(msg.sender == cars[_id].renter);
         _;
     }
 
@@ -27,7 +27,7 @@ contract CarRenter is Ownable {
         // string rentername;
         uint8 cartype;   // 0~4
         uint8 age;
-        uint8 oil;
+        uint32 oil;
         uint8 damage;    // 0~100
         uint16 xlocate;
         uint16 ylocate;
@@ -69,9 +69,9 @@ contract CarRenter is Ownable {
     function addCar(string memory _name, uint8 _type, uint8 _age, uint16 _price, uint16 x_loc, uint16 y_loc) public {
         // Car memory newCar = Car("hi", "asdf", 21, 0, 0, 0, msg.sender, msg.sender, 0);
         // cars.push(newCar);
-        initOiltype();
-        uint8 oil_capacity = typeToOil[_type];
-        Car memory newCar = Car(_name, _type, _age, oil_capacity, 0, x_loc, y_loc, _price, 0, now, msg.sender, msg.sender);
+        // initOiltype();
+        // uint8 oil_capacity = typeToOil[_type];
+        Car memory newCar = Car(_name, _type, _age, 0, 0, x_loc, y_loc, _price, 0, now, msg.sender, msg.sender);
         uint id = cars.push(newCar) - 1;
         carToOwner[id] = msg.sender;
         cars[id]._id = uint16(id);
@@ -103,11 +103,16 @@ contract CarRenter is Ownable {
     }
     function rentCar(uint id) external payable {
         cars[id].renter = msg.sender;
-        cars[id].owner.transfer(cars[id].price);
+        // cars[id].owner.transfer(cars[id].price);
+        cars[id].oil = 0;
+        emit RentCar(id, addressToName[cars[id].owner], addressToName[msg.sender]);
         // emit RentCar(id);
     }
     function returnCar(uint id) external {
         cars[id].renter = cars[id].owner;
+        uint oilConsumption = cars[id].oil;
+        cars[id].oil = 0;
+        emit ReturnCar(id, addressToName[cars[id].owner]);
         // emit ReturnCar(id);
     }
     function append(string a, string b, string c, string d, string e) internal pure returns (string) {
