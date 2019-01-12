@@ -126,9 +126,9 @@ contract CarRenter is Ownable {
             cars[id].owner.transfer(szaboToOwner * 1 szabo);
             cars[id].renter.transfer(szaboToRenter * 1 szabo);
         } else {
-            szaboToOwner = cars[id].price * (carToRentTime[id] + 50) * 1000;
+            szaboToOwner = cars[id].price * carToRentTime[id] * 1000 + cars[id].price * 50 * 1000;
             emit log(szaboToOwner);
-            cars[id].owner.transfer(szaboToRenter * 1 szabo);
+            cars[id].owner.transfer(szaboToOwner * 1 szabo);
         }
         cars[id].renter = cars[id].owner;
         cars[id].oil = 0;

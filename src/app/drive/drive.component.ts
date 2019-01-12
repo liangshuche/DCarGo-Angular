@@ -62,17 +62,20 @@ export class DriveComponent implements OnInit {
     this.contractService.changeLocation(
       this.carArray[this.selectedIdx].id,
       this.targetLocation.intLongitude,
-      this.targetLocation.intLatitude).pipe(
-        mergeMap(() => {
-          if (Math.random() < 0.5) {
-            return this.contractService.createCrash(this.carArray[this.selectedIdx].id, 100);
-          } else {
-            return of('');
-          }
-        })
-      ).subscribe(() => {
+      this.targetLocation.intLatitude).subscribe(() => {
         this.carRepoService.updateCarByIdx(this.selectedIdx);
       });
+      // this.targetLocation.intLatitude).pipe(
+      //   mergeMap(() => {
+      //     if (Math.random() < 0.5) {
+      //       return this.contractService.createCrash(this.carArray[this.selectedIdx].id, 100);
+      //     } else {
+      //       return of('');
+      //     }
+      //   })
+      // ).subscribe(() => {
+      //   this.carRepoService.updateCarByIdx(this.selectedIdx);
+      // });
   }
 
   onClickList(i) {

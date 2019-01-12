@@ -54,7 +54,7 @@ export class CarDetailPopoverComponent implements OnInit {
   }
 
   onRent() {
-    this.contractService.rentCarByIdx(this.car.id, this.car.price * (this.rentTime + 50) / 1000 * 1.0).subscribe(() => {
+    this.contractService.rentCarByIdx(this.car.id, this.rentTime, this.car.price * (this.rentTime + 50) / 1000 * 1.0).subscribe(() => {
       this.updateCar();
     });
   }

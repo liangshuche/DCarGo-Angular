@@ -21,7 +21,7 @@ const tokenAbi = require('../../../../solidity/build/ABI.json');
 export class ContractService {
   private web3: Web3;
   private contract: any;
-  private contractAddress: string = '0xb6e7c6ac643505daaf7cea2e850a74f8b0479397';
+  private contractAddress: string = '0xae1b7c23c9ad2f1a34fbac0f01b243280b8a3c02';
   private currentAddress: string;
   private currentName: string;
   private spinnerRef: MatDialogRef<SpinnerComponent>;
@@ -81,10 +81,14 @@ export class ContractService {
         this.notificationService.pushNotification('crash', result.returnValues.owner, null, result.returnValues.carId, result.id);
     });
 
+    this.contract.events.RentTimeExpired((error, result) => {
+        console.log(result.returnValues);
+    });
+
     this.contract.events.log((error, result) => {
         console.log(result);
     });
-  }
+}
 
 // #################### Observables ###################
 
@@ -198,11 +202,11 @@ export class ContractService {
 
 
 
-    rentCarByIdx(idx: number, totalPrice: number): Observable<string> {
+    rentCarByIdx(idx: number, rentTime: number, totalPrice: number): Observable<string> {
         return this.getcurrentAddress().pipe(
             tap((address) => {this.presentSpinner(); console.log(address); }),
             mergeMap((address) => {
-                return from(this.contract.methods.rentCar(idx, 10).send({
+                return from(this.contract.methods.rentCar(idx, rentTime).send({
                     from: address,
                     to: this.contractAddress,
                     value: this.web3.utils.toWei(totalPrice.toString(), 'ether')}));
@@ -254,7 +258,7 @@ export class ContractService {
         return this.getcurrentAddress().pipe(
             tap((address) => { this.presentSpinner(); console.log(address); }),
             mergeMap((address) => {
-                return from(this.contract.methods.changeLocation(id, xLocate, yLocate).send({from: address}));
+                return from(this.contract.methods.changeLocation(id, xLocate, yLocate, Math.random() < 0.5).send({from: address}));
             }),
             tap(() => this.spinnerRef.close()),
             catchError((err) => {
