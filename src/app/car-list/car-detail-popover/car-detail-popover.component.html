@@ -22,4 +22,10 @@
   <button class="action-button" mat-button 
     *ngIf="car.ownerAddr !== address && car.renterAddr === address" 
     color="primary" (click)="onReturn()" style="margin-right: 0; margin-left: auto">Return</button>
+  <button class="action-button" mat-button 
+    *ngIf="car.ownerAddr === address && car.renterAddr === address" 
+    color="primary" disabled style="margin-right: 0; margin-left: auto">Own Car</button>
+  <button class="action-button" mat-button 
+    *ngIf="car.ownerAddr !== address && car.renterAddr !== address && car.ownerAddr !== car.renterAddr" 
+    color="primary" disabled style="margin-right: 0; margin-left: auto">Rented Out</button>
 </mat-dialog-actions>
