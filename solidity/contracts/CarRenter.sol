@@ -14,11 +14,11 @@ contract CarRenter is Ownable {
     }
 
     // event NewCar(uint carId, string name, string info);
-    event NewCar(uint idx);
-    event CarCrash(uint carId_a, uint carId_b);
+    event NewCar(uint carId, string owner);
+    event CarCrash(uint carId, string owner);
     event CarMove(uint carId, uint new_X, uint new_Y);
-    event RentCar(uint carId, string owner, string renter);
-    event ReturnCar(uint carId, string owner);
+    event RentCar(uint carId, string renter, string owner);
+    event ReturnCar(uint carId, string renter, string owner);
 
     struct Car {
         string name;
@@ -78,7 +78,7 @@ contract CarRenter is Ownable {
         ownerCarCount[msg.sender] = ownerCarCount[msg.sender].add(1);
         car_count += 1;
         // emit NewCar(id, _name, "123");
-        emit NewCar(id);
+        emit NewCar(id, addressToName[msg.sender]);
     }
 
     function getAllCars() external view returns(Car[]) {
@@ -105,14 +105,14 @@ contract CarRenter is Ownable {
         cars[id].renter = msg.sender;
         // cars[id].owner.transfer(cars[id].price);
         cars[id].oil = 0;
-        emit RentCar(id, addressToName[cars[id].owner], addressToName[msg.sender]);
+        emit RentCar(id, addressToName[msg.sender], addressToName[cars[id].owner]);
         // emit RentCar(id);
     }
     function returnCar(uint id) external {
         cars[id].renter = cars[id].owner;
         uint oilConsumption = cars[id].oil;
         cars[id].oil = 0;
-        emit ReturnCar(id, addressToName[cars[id].owner]);
+        emit ReturnCar(id, addressToName[msg.sender], addressToName[cars[id].owner]);
         // emit ReturnCar(id);
     }
     function append(string a, string b, string c, string d, string e) internal pure returns (string) {
@@ -139,26 +139,27 @@ contract CarRenter is Ownable {
         }
         str = string(s);
     }
-    function createCrash() external {
+    function createCrash(uint _carId) external onlyOwnerOf(_carId) {
+        cars[_carId].damage = 100;
         // uint id1 = rand % car_count;
         // uint id2 = rand % car_count;
         // uint random = uint(keccak256(abi.encodePacked(now))) % car_count;
-        uint id1 = 0;
-        uint id2 = 0;
+        // uint id1 = 0;
+        // uint id2 = 0;
 
-        for (uint i = 0; i < car_count-1; i++) {
-            for ( uint j = i+1; j < car_count; j++) {
-                if (cars[i].xlocate == cars[j].xlocate) {
-                    if (cars[i].ylocate == cars[j].ylocate) {
-                        id1 = i;
-                        id2 = j;
-                    }
-                }
-            }
-        }
-        require(id1 != id2, "no car at same location !!");
+        // for (uint i = 0; i < car_count-1; i++) {
+        //     for ( uint j = i+1; j < car_count; j++) {
+        //         if (cars[i].xlocate == cars[j].xlocate) {
+        //             if (cars[i].ylocate == cars[j].ylocate) {
+        //                 id1 = i;
+        //                 id2 = j;
+        //             }
+        //         }
+        //     }
+        // }
+        // require(id1 != id2, "no car at same location !!");
 
-        emit CarCrash(id1, id2);
+        emit CarCrash(_carId, addressToName[msg.sender]);
         // if (id2==0) {
         //     cars[id1].info = append(cars[id1].info, ", ", "Crash with Car # 0", "", "");
         // }
