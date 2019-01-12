@@ -19,6 +19,7 @@ contract CarRenter is Ownable {
     event CarMove(uint carId, uint new_X, uint new_Y);
     event RentCar(uint carId, string renter, string owner);
     event ReturnCar(uint carId, string renter, string owner);
+    event log(uint message);
 
     struct Car {
         string name;
@@ -46,6 +47,10 @@ contract CarRenter is Ownable {
     mapping (address => string) addressToName;
     mapping (uint8 => uint8) typeToOil;
     mapping (uint8 => uint8) typeToCapacity;
+    mapping (uint => uint8) carToRentTime;
+    function () payable {
+        
+    }
     
     function initOiltype() internal {
         typeToCapacity[0] = 30;      // 小客車
@@ -101,17 +106,38 @@ contract CarRenter is Ownable {
     function getLength() external view returns(uint) {
         return car_count;
     }
-    function rentCar(uint id) external payable {
-        cars[id].renter = msg.sender;
-        // cars[id].owner.transfer(cars[id].price);
+    function rentCar(uint id, uint8 rentTime)  payable {
+        // require(msg.value == cars[id].price * (50 + rentTime)  * 1 finney);
+        // cars[id].owner.transfer(value * 1 ether);
         cars[id].oil = 0;
+        cars[id].renter = msg.sender;
+        cars[id].rentTime = now + rentTime;
+        carToRentTime[id] = rentTime;
         emit RentCar(id, addressToName[msg.sender], addressToName[cars[id].owner]);
         // emit RentCar(id);
     }
-    function returnCar(uint id) external {
+    function returnCar(uint id) payable {
+        emit log(id);
+        emit log(cars[id].price);
+        emit log(cars[id].price * 50);
+        emit log(cars[id].price * 50 * 1000000000000000);
+        uint weiToOwner = cars[id].price * 1000000000000000;
+        uint weiToRenter = cars[id].price * 50 * 1000000000000000;
+        // if(cars[id].damage != 0 || cars[id].rentTime < now){
+        //     weiToOwner = cars[id].price * ()
+        //     // cars[id].owner.transfer(cars[id].price * (50 + carToRentTime[id]) * 1 finney);
+        // }
+        // else{
+        // cars[id].owner.transfer(cars[id].price * carToRentTime[id] * 1 finney);
+        // cars[id].owner.transfer(cars[id].oil * 10 * 1 szabo);
+        // cars[id].renter.transfer(cars[id].price * 50 * 1 finney - cars[id].oil * 10 * 1 szabo);
+        // }
+        cars[id].owner.transfer(weiToOwner);
+        cars[id].renter.transfer(weiToRenter);
+        // cars[id].renter.transfer(1 ether);
         cars[id].renter = cars[id].owner;
-        uint oilConsumption = cars[id].oil;
         cars[id].oil = 0;
+        cars[id].damage = 0;
         emit ReturnCar(id, addressToName[msg.sender], addressToName[cars[id].owner]);
         // emit ReturnCar(id);
     }

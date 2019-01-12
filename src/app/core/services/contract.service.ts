@@ -21,7 +21,7 @@ const tokenAbi = require('../../../../solidity/build/ABI.json');
 export class ContractService {
   private web3: Web3;
   private contract: any;
-  private contractAddress: string = '0x340d87827001c15195099ba3c2f64ba79370c08e';
+  private contractAddress: string = '0xb6e7c6ac643505daaf7cea2e850a74f8b0479397';
   private currentAddress: string;
   private currentName: string;
   private spinnerRef: MatDialogRef<SpinnerComponent>;
@@ -79,6 +79,10 @@ export class ContractService {
     this.contract.events.CarCrash((error, result) => {
         this.updateCarSubject.next(parseInt(result.returnValues.carId, 10));
         this.notificationService.pushNotification('crash', result.returnValues.owner, null, result.returnValues.carId, result.id);
+    });
+
+    this.contract.events.log((error, result) => {
+        console.log(result);
     });
   }
 
@@ -173,13 +177,35 @@ export class ContractService {
         );
     }
 
-
-
-    rentCarByIdx(idx: number): Observable<string> {
+    deposit(value: number): Observable<string> {
         return this.getcurrentAddress().pipe(
             tap((address) => {this.presentSpinner(); console.log(address); }),
             mergeMap((address) => {
-                return from(this.contract.methods.rentCar(idx).send({from: address}));
+                return from(this.web3.eth.sendTransaction({
+                    from: address,
+                    to: this.contractAddress,
+                    value: this.web3.utils.toWei(value.toString(), 'ether')}));
+            }),
+            tap(() => this.spinnerRef.close()),
+            catchError((err) => {
+                console.log(err);
+                this.spinnerRef.close();
+                // this.dialog.closeAll();
+                return of(null);
+            })
+        );
+    }
+
+
+
+    rentCarByIdx(idx: number, totalPrice: number): Observable<string> {
+        return this.getcurrentAddress().pipe(
+            tap((address) => {this.presentSpinner(); console.log(address); }),
+            mergeMap((address) => {
+                return from(this.contract.methods.rentCar(idx, 10).send({
+                    from: address,
+                    to: this.contractAddress,
+                    value: this.web3.utils.toWei(totalPrice.toString(), 'ether')}));
             }),
             tap(() => this.spinnerRef.close()),
             catchError((err) => {

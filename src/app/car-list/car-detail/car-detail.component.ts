@@ -31,16 +31,16 @@ export class CarDetailComponent implements OnInit {
     });
   }
 
-  onRent() {
-    this.contractService.rentCarByIdx(this.car.id).subscribe(() => {
-      this.updateCar();
-    });
-  }
+  // onRent() {
+  //   this.contractService.rentCarByIdx(this.car.id).subscribe(() => {
+  //     this.updateCar();
+  //   });
+  // }
 
-  onReturn() {
-    this.contractService.returnCarByIdx(this.car.id).subscribe(() => {
-      this.updateCar();
-    });
-  }
+  // onReturn() {
+  //   this.contractService.returnCarByIdx(this.car.id).subscribe(() => {
+  //     this.updateCar();
+  //   });
+  // }
 
 }
