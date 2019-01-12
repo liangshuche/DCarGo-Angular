@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import Web3 from 'web3';
-import { Observable, from, of, merge, Subject } from 'rxjs';
+import { Observable, from, of, merge, Subject, BehaviorSubject } from 'rxjs';
 import { map, tap, mergeMap, catchError } from 'rxjs/operators';
 import { CarModel } from '../models/car.model';
 import { CarTypeEnum } from '../enums/car-type.enum';
@@ -8,6 +8,7 @@ import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
 import { SpinnerComponent } from 'src/app/shared/spinner/spinner.component';
 import { LocationModel } from '../models/location.model';
 import { LocationService } from './location.service';
+import { NotificationService } from './notification.service';
 // import * as TruffleContract from 'truffle-contract';
 declare let require: any;
 declare let window: any;
@@ -20,18 +21,20 @@ const tokenAbi = require('../../../../solidity/build/ABI.json');
 export class ContractService {
   private web3: Web3;
   private contract: any;
-  private contractAddress: string = '0x6b0b9c3d7eabc3737c66e8925dfa917e87d9db5c';
+  private contractAddress: string = '0x340d87827001c15195099ba3c2f64ba79370c08e';
   private currentAddress: string;
   private currentName: string;
   private spinnerRef: MatDialogRef<SpinnerComponent>;
 
   private addCarSubject: Subject<number>;
   private updateCarSubject: Subject<number>;
+  private registerSubject: Subject<boolean>;
 
   constructor(
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private locationService: LocationService,
+    private notificationService: NotificationService
   ) {
     if (typeof window.web3) {
       this.web3 = new Web3(window.web3.currentProvider);
@@ -43,25 +46,39 @@ export class ContractService {
 
     this.addCarSubject = new Subject<number>();
     this.updateCarSubject = new Subject<number>();
+    this.registerSubject = new BehaviorSubject<boolean>(false);
 
     this.contract = new this.web3.eth.Contract(tokenAbi, this.contractAddress);
 
     this.contract.events.NewCar((error, result) => {
-        this.addCarSubject.next(result.returnValues.idx);
-        this.delay(200).then(() => {
-            this.snackBar.open('New Car Added', 'Dismiss', {
-                duration: 2000,
-            });
-        });
-        console.log(result.returnValues);
+        console.log(result);
+        this.addCarSubject.next(result.returnValues.carId);
+        // this.delay(200).then(() => {
+        //     this.snackBar.open('New Car Added', 'Dismiss', {
+        //         duration: 2000,
+        //     });
+        // });
+        // console.log(result.returnValues);
+        this.notificationService.pushNotification('add', result.returnValues.owner, null, result.returnValues.carId, result.id);
     });
 
     this.contract.events.RentCar((error, result) => {
         this.updateCarSubject.next(result.returnValues.carId);
-        this.delay(100);
-        this.snackBar.open(result.returnValues.owner + '\'s car is rented by ' + result.returnValues.renter, 'Dismiss', {
-            duration: 2000,
-        });
+        // this.delay(100);
+        // this.snackBar.open(result.returnValues.owner + '\'s car is rented by ' + result.returnValues.renter, 'Dismiss', {
+        //     duration: 2000,
+        // });
+        this.notificationService.pushNotification('rent', result.returnValues.renter, result.returnValues.owner, null, result.id);
+    });
+
+    this.contract.events.ReturnCar((error, result) => {
+        this.updateCarSubject.next(result.returnValues.carId);
+        this.notificationService.pushNotification('return', result.returnValues.renter, result.returnValues.owner, null, result.id);
+    });
+
+    this.contract.events.CarCrash((error, result) => {
+        this.updateCarSubject.next(result.returnValues.carId);
+        this.notificationService.pushNotification('crash', result.returnValues.owner, null, result.returnValues.carId, result.id);
     });
   }
 
@@ -73,6 +90,10 @@ export class ContractService {
 
     onUpdateCar(): Observable<number> {
         return this.updateCarSubject.asObservable();
+    }
+
+    onRegisterEvent(): Observable<boolean> {
+        return this.registerSubject.asObservable();
     }
 
 // ###################### GETTER ######################
@@ -97,7 +118,8 @@ export class ContractService {
             return this.getcurrentAddress().pipe(
                 mergeMap((address) => {
                     return from(this.contract.methods.getNameByAddress(address).call());
-                })
+                }),
+                tap(name => this.registerSubject.next(name ? true : false))
             );
         }
     }

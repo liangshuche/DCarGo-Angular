@@ -19,7 +19,8 @@ import {
   MatTabsModule,
   MatRadioModule,
   MatSnackBarModule,
-  MatSliderModule } from '@angular/material';
+  MatSliderModule,
+  MatBadgeModule } from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AgmCoreModule } from '@agm/core';
 
@@ -37,6 +38,7 @@ import { CarDetailComponent } from './car-list/car-detail/car-detail.component';
 import { CarDetailPopoverComponent } from './car-list/car-detail-popover/car-detail-popover.component';
 import { DriveComponent } from './drive/drive.component';
 import { CrashComponent } from './crash/crash.component';
+import { NotificationCenterComponent } from './shared/notification-center/notification-center.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +54,7 @@ import { CrashComponent } from './crash/crash.component';
     CarDetailPopoverComponent,
     DriveComponent,
     CrashComponent,
+    NotificationCenterComponent,
     // NavComponent
   ],
   imports: [
@@ -78,6 +81,7 @@ import { CrashComponent } from './crash/crash.component';
     MatRadioModule,
     MatSnackBarModule,
     MatSliderModule,
+    MatBadgeModule,
     AgmCoreModule.forRoot({
       apiKey: null,
       language: 'zh-TW'
@@ -86,6 +90,7 @@ import { CrashComponent } from './crash/crash.component';
   entryComponents: [
     RegisterPopoverComponent,
     CarDetailPopoverComponent,
+    NotificationCenterComponent,
     SpinnerComponent
   ],
   providers: [],

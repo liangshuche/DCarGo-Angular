@@ -9,11 +9,15 @@
       </button>
       
       <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs>
-        <button type="button" mat-icon-button>
+        <button *ngIf="registered" routerLink='/user' type="button" mat-icon-button>
+          <mat-icon>person_outline</mat-icon>
+        </button>
+        <button *ngIf="!registered" routerLink='/user' type="button" color="warn" mat-icon-button>
           <mat-icon>person_outline</mat-icon>
         </button>
         <button type="button" mat-icon-button>
-          <mat-icon>check</mat-icon>
+          <mat-icon *ngIf="!newNotificationCount" (click)="onClick()">error_outline</mat-icon>
+          <mat-icon *ngIf="newNotificationCount" matBadge="&#8203;" matBadgeColor="warn" matBadgeSize="small" (click)="onClick()">error_outline</mat-icon>
         </button>
       </div>
     </mat-toolbar-row>

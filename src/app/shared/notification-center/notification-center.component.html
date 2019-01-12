@@ -1,0 +1,16 @@
+<div class="header" style="position: fixed; width: 100%">
+  <h1 mat-dialog-title >Notification Center</h1>
+  <mat-divider style="width: 360px"></mat-divider>
+</div>
+<div class="container">
+  <mat-list>
+    <mat-list-item *ngFor="let log of logs; let i = index"  style="border-bottom: 2px solid black; width: 320px; margin-top: 20px">
+        <!-- <h3 matLine> {{message.from}} </h3> -->
+        <p>
+          <span [ngClass]="{'old': i >= this.data.numNotifications}">&#8226;</span>
+          {{log}}
+        </p>
+      </mat-list-item>
+    </mat-list>
+</div>
+    
