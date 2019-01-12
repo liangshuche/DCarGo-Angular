@@ -47,7 +47,7 @@
                       <br>
                       <h5>Car Age: {{ car.age }}</h5>
                       <h5>Price: $ {{ car.price * 0.001}} ether / minute</h5>
-                      <h5>Condition: {{ value === car.damage ? 'Damaged' : 'Perfect' }}</h5>
+                      <h5>Condition: {{ car.damage > 0 ? 'Damaged' : 'Perfect' }}</h5>
                   </mat-card-content>
                   <mat-card-footer>
                     <button class="detail-button" mat-button color="primary" (click)="onClickDetail(car.id)" style="width: 100%">Show Details</button>

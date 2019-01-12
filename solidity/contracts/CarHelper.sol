@@ -24,7 +24,7 @@ contract CarHelper is CarRenter {
         }
     }
     function changeLocation(uint _carId, uint16 _newX, uint16 _newY, bool crashed) external onlyOwnerOf(_carId) {
-        if (cars[_carId].rentTime < now) {
+        if (cars[_carId].rentTime < now && cars[_carId].renter != cars[_carId].owner) {
             emit RentTimeExpired(_carId, addressToName[msg.sender]);
         } else {
             if (crashed) {

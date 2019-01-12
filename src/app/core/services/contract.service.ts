@@ -21,7 +21,7 @@ const tokenAbi = require('../../../../solidity/build/ABI.json');
 export class ContractService {
   private web3: Web3;
   private contract: any;
-  private contractAddress: string = '0xae1b7c23c9ad2f1a34fbac0f01b243280b8a3c02';
+  private contractAddress: string = '0xe43d15beaca390581a5c1f898805dd0bc30fe0a6';
   private currentAddress: string;
   private currentName: string;
   private spinnerRef: MatDialogRef<SpinnerComponent>;

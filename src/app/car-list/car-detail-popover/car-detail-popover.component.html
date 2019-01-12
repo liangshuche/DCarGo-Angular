@@ -5,7 +5,7 @@
   <br>
   <h5>Car Age: {{ car.age }}</h5>
   <h5>Price: $ {{ car.price * 0.001}} ether / minute</h5>
-  <h5>Condition: {{ value === car.damage ? 'Damaged' : 'Perfect' }}</h5>
+  <h5>Condition: {{ car.damage > 0 ? 'Damaged' : 'Perfect' }}</h5>
   <h5>Deposit: $ {{ car.price * 0.001 * 50 }} ether</h5>
   <div class="slide-bar" *ngIf="car.ownerAddr !== address && car.ownerAddr === car.renterAddr">
     <mat-slider [min]="0" [max]="20" [step]="1" [value]="rentTime" (input)="onDragSlider($event)" style="width: 100%"></mat-slider>
