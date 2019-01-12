@@ -6,6 +6,7 @@ import { CarModel } from '../core/models/car.model';
 import { CarRepoService } from '../core/services/car-repo.service';
 import { mergeMap, tap } from 'rxjs/operators';
 import { zip, of } from 'rxjs';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-drive',
@@ -13,6 +14,9 @@ import { zip, of } from 'rxjs';
   styleUrls: ['./drive.component.scss']
 })
 export class DriveComponent implements OnInit {
+  contract;
+  eventHistoryMap: Map<string, boolean> = new Map<string, boolean>();
+
   targetLocation: LocationModel = new LocationModel();
   carArray: CarModel[] = [];
   selectedIdx: number;
@@ -24,10 +28,32 @@ export class DriveComponent implements OnInit {
   constructor(
     private contractService: ContractService,
     private locationService: LocationService,
-    private carRepoService: CarRepoService
+    private carRepoService: CarRepoService,
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit() {
+    this.contract = this.contractService.getContract();
+
+    this.contract.events.RentTimeExpired((error, result) => {
+      if (!this.eventHistoryMap.get(result.id) && parseInt(result.returnValues.carId, 10) === this.carArray[this.selectedIdx].id) {
+        this.eventHistoryMap.set(result.id, true);
+        this.snackBar.open('Rental Time Has Expired', 'Dismiss', {
+          duration: 2000,
+        });
+        this.targetLocation.geoLatitude = this.carArray[this.selectedIdx].location.geoLatitude;
+        this.targetLocation.geoLongitude = this.carArray[this.selectedIdx].location.geoLongitude;
+      }
+    });
+
+    this.contract.events.CarCrash((error, result) => {
+      if (!this.eventHistoryMap.get(result.id) && parseInt(result.returnValues.carId, 10) === this.carArray[this.selectedIdx].id) {
+        this.eventHistoryMap.set(result.id, true);
+        this.snackBar.open('Oops! You Crashed Your Car', 'Dismiss', {
+          duration: 2000,
+        });
+      }
+    });
     // this.targetLocation.geoLatitude = 25.019312;
     // this.targetLocation.geoLongitude = 121.542274;
     // this.carRepoService.updateCars();

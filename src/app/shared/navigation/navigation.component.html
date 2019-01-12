@@ -12,7 +12,7 @@
         <button *ngIf="registered" routerLink='/user' type="button" mat-icon-button>
           <mat-icon>person_outline</mat-icon>
         </button>
-        <button *ngIf="!registered" routerLink='/user' type="button" color="warn" mat-icon-button>
+        <button *ngIf="!registered" matTooltip="Please Register First" routerLink='/user' type="button" color="warn" mat-icon-button>
           <mat-icon>person_outline</mat-icon>
         </button>
         <button type="button" mat-icon-button>

@@ -81,10 +81,6 @@ export class ContractService {
         this.notificationService.pushNotification('crash', result.returnValues.owner, null, result.returnValues.carId, result.id);
     });
 
-    this.contract.events.RentTimeExpired((error, result) => {
-        console.log(result.returnValues);
-    });
-
     this.contract.events.log((error, result) => {
         console.log(result);
     });
@@ -105,6 +101,10 @@ export class ContractService {
     }
 
 // ###################### GETTER ######################
+
+    getContract() {
+        return this.contract;
+    }
 
     getcurrentAddress(): Observable<string> {
         if (this.currentAddress) {

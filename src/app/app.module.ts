@@ -20,7 +20,8 @@ import {
   MatRadioModule,
   MatSnackBarModule,
   MatSliderModule,
-  MatBadgeModule } from '@angular/material';
+  MatBadgeModule,
+  MatTooltipModule } from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AgmCoreModule } from '@agm/core';
 
@@ -78,6 +79,7 @@ import { NotificationCenterComponent } from './shared/notification-center/notifi
     MatSnackBarModule,
     MatSliderModule,
     MatBadgeModule,
+    MatTooltipModule,
     AgmCoreModule.forRoot({
       apiKey: null,
       language: 'zh-TW'
