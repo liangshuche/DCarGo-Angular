@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { NotificationCenterComponent } from 'src/app/shared/notification-center/notification-center.component';
-import { NotificationModel } from '../models/notification.model';
 import { Subject, Observable } from 'rxjs';
 
 @Injectable({
