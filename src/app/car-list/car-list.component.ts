@@ -9,7 +9,7 @@ import { MatDialog } from '@angular/material';
 import { CarDetailComponent } from './car-detail/car-detail.component';
 import { CarDetailPopoverComponent } from './car-detail-popover/car-detail-popover.component';
 import { LocationService } from '../core/services/location.service';
-import { MarkerManager } from '@agm/core';
+import { MarkerManager, LatLngBounds } from '@agm/core';
 
 @Component({
   selector: 'app-car-list',
@@ -19,6 +19,13 @@ import { MarkerManager } from '@agm/core';
 export class CarListComponent implements OnInit {
   lat: number = 51.678418;
   lng: number = 7.809007;
+  prevInfo: any;
+  mapBounds = {
+    north: 25.0718,
+    south: 24.9968,
+    west: 121.457,
+    east: 121.607
+  };
   carArray: CarModel[] = [];
   displayCarArray: CarModel[] = [];
   filter: string = 'all';
@@ -41,6 +48,18 @@ export class CarListComponent implements OnInit {
     this.contractService.getcurrentAddress().subscribe((address) => {
       this.address = address;
     });
+  }
+
+  onDragMap(ev) {
+    console.log(ev);
+  }
+
+  onClickMarker(info) {
+    if (this.prevInfo) {
+      console.log(this.prevInfo);
+      this.prevInfo.close();
+    }
+    this.prevInfo = info;
   }
 
   onClickDetail(idx: number) {

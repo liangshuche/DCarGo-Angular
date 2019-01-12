@@ -17,9 +17,9 @@ export class DriveComponent implements OnInit {
   carArray: CarModel[] = [];
   selectedIdx: number;
 
-  mapLatitude: number = 25.019312;
-  mapLongitude: number = 121.542274;
-  mapZoom: number = 12;
+  mapLatitude: number = 25.0343;
+  mapLongitude: number = 121.532;
+  mapZoom: number = 13;
 
   constructor(
     private contractService: ContractService,
@@ -47,7 +47,9 @@ export class DriveComponent implements OnInit {
   }
 
   onClickMap(ev, info) {
-    if (this.selectedIdx > -1) {
+    if (this.selectedIdx > -1 &&
+        ev.coords.lat >= 24.9968 && ev.coords.lat < 25.0718 &&
+        ev.coords.lng >= 121.457 && ev.coords.lng < 121.607) {
       this.targetLocation.geoLatitude = ev.coords.lat;
       this.targetLocation.geoLongitude = ev.coords.lng;
       info.open();
