@@ -4,19 +4,17 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { CarRegisterComponent } from './car-register/car-register.component';
 import { UserComponent } from './user/user.component';
 import { CarListComponent } from './car-list/car-list.component';
-import { CarDetailComponent } from './car-list/car-detail/car-detail.component';
 import { DriveComponent } from './drive/drive.component';
-import { CrashComponent } from './crash/crash.component';
+import { AuthGuardService } from './core/services/auth-guard.service';
 
 const routes: Routes = [
   { path: '', component: HomepageComponent},
   // { path: 'user', component: UserRegisterComponent},
-  { path: 'cars', component: CarListComponent},
-  { path: 'cars/:id', component: CarDetailComponent},
-  { path: 'rent-out', component: CarRegisterComponent },
+  { path: 'cars', component: CarListComponent, canActivate: [AuthGuardService]},
+  { path: 'rent-out', component: CarRegisterComponent, canActivate: [AuthGuardService] },
   { path: 'user', component: UserComponent },
-  { path: 'drive', component: DriveComponent },
-  { path: 'crash', component: CrashComponent }
+  { path: 'drive', component: DriveComponent, canActivate: [AuthGuardService] },
+  // { path: 'crash', component: CrashComponent }
   // { path: '', redirectTo: '/recipes', pathMatch: 'full' },
   // { path: 'recipes', component: RecipesComponent, children: [
     // { path: '', component: RecipeStartComponent },

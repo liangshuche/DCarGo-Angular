@@ -6,7 +6,6 @@ import { range } from 'rxjs';
 import { CarRepoService } from '../core/services/car-repo.service';
 import { LocationModel } from '../core/models/location.model';
 import { MatDialog } from '@angular/material';
-import { CarDetailComponent } from './car-detail/car-detail.component';
 import { CarDetailPopoverComponent } from './car-detail-popover/car-detail-popover.component';
 import { LocationService } from '../core/services/location.service';
 import { MarkerManager, LatLngBounds } from '@agm/core';

@@ -35,16 +35,19 @@
               
                 <!-- <div fxflex="1 1 80%"> -->
                   <mat-card-header>
-                    <div mat-card-avatar><mat-icon>directions_car</mat-icon></div>
+                      <div mat-card-avatar style="font-size: 40px">
+                          <mat-icon [inline]="true">directions_car</mat-icon>
+                      </div>
+                    <!-- <div mat-card-avatar><mat-icon>directions_car</mat-icon></div> -->
                     <mat-card-title>{{ car.name }}</mat-card-title>
                     <mat-card-subtitle>{{ car.type }}</mat-card-subtitle>
                   </mat-card-header>
                   <mat-card-content>
                       <mat-divider></mat-divider>
                       <br>
-                      <h5>Condition: 123</h5>
                       <h5>Car Age: {{ car.age }}</h5>
-                      <h5>Price: 100</h5>
+                      <h5>Price: $ {{ car.price * 0.001}} ether / minute</h5>
+                      <h5>Condition: {{ value === car.damage ? 'Damaged' : 'Perfect' }}</h5>
                   </mat-card-content>
                   <mat-card-footer>
                     <button class="detail-button" mat-button color="primary" (click)="onClickDetail(car.id)" style="width: 100%">Show Details</button>

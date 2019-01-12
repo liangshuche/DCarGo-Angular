@@ -127,6 +127,7 @@ export class ContractService {
                 mergeMap((address) => {
                     return from(this.contract.methods.getNameByAddress(address).call());
                 }),
+                tap(name => this.currentName = name),
                 tap(name => this.registerSubject.next(name ? true : false))
             );
         }

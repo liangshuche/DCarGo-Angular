@@ -16,11 +16,11 @@
         <!-- <input matInput placeholder="Placeholder" [(ngModel)]="carInput.type"> -->
     </mat-form-field>
     <mat-form-field appearance="outline">
-        <mat-label>車齡</mat-label>
+        <mat-label>車齡 (&#60; 255)</mat-label>
         <input type="number" matInput placeholder="" [(ngModel)]="carInput.age">
     </mat-form-field>
     <mat-form-field appearance="outline">
-        <mat-label>出租價格</mat-label>
+        <mat-label>出租價格 (&#60; 2000)</mat-label>
         <input type="number" matInput placeholder="" [(ngModel)]="carInput.price">
     </mat-form-field>
     <button mat-raised-button color="primary" (click)="onRegister()">Register</button>
