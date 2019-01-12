@@ -30,7 +30,11 @@ export class CarRepoService {
 
   addCar(idx: number) {
     this.contractService.getCarByIdx(idx).subscribe((car) => {
-      this.carArray.push(car);
+      if (this.carArray.length === idx) {
+        this.carArray.push(car);
+      } else {
+        console.log(this.carArray.length, idx);
+      }
       console.log(this.carArray);
       this.carArray$.next(this.carArray);
     });

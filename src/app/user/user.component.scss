@@ -1,5 +1,7 @@
 .container {
     min-height: calc(100vh - 70px);
+    min-width: 400px;
+    max-width: 800px;
 }
 
 .icon {

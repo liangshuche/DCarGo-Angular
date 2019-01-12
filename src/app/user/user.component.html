@@ -1,9 +1,6 @@
 <!-- <div class="placeholder" style="height: 50px"></div> -->
 <div class="container">
-
-  <mat-tab-group mat-stretch-tabs>
-    <mat-tab label="Overview">
-      <mat-card class="card">
+  <mat-card class="card">
         <mat-card-header style="height: 80px">
           <div class="icon" mat-card-avatar>
             <mat-icon [inline]="true">person</mat-icon>
@@ -14,28 +11,12 @@
         </mat-card-header>
         <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
         <mat-card-content>
-            <h3>Owned Cars: 10</h3>
-            <h3>Rented Cars: 10</h3>
-            <h3>Rented Out Cars: 10</h3>
+            <h3>Owned Cars: {{ numOwned }}</h3>
+            <h3>Rented Cars: {{ numRented }}</h3>
+            <h3>Rented Out Cars:  {{ numRentedOut }}</h3>
         </mat-card-content>
         <mat-card-actions>
-          <button mat-raised-button (click)="onClickRegister()">Register</button>
+          <button *ngIf="!userName.length" mat-stroked-button color="warn" (click)="onClickRegister()" style="width: 200px">Register</button>
         </mat-card-actions>
       </mat-card>
-    </mat-tab>
-    <mat-tab label="My Cars">
-
-    </mat-tab>
-    <mat-tab label="Map">
-      <!-- <agm-map [latitude]="carLocations[0].latitude" [longitude]="carLocations[0].longitude" [streetViewControl]="false" [zoom]="14">
-          <agm-marker *ngFor="let location of carLocations" [latitude]="location.latitude" [longitude]="location.longitude">
-            <agm-info-window>
-              <button mat-button (click)="onClickDetail(location.id)">Detail</button>
-              {{ location.name }}
-            </agm-info-window>
-          </agm-marker>
-        </agm-map> -->
-    </mat-tab>
-  </mat-tab-group>
-
 </div>

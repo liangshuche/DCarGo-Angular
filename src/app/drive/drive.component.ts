@@ -42,7 +42,7 @@ export class DriveComponent implements OnInit {
 
   updateList(cars: CarModel[]) {
     this.contractService.getcurrentAddress().subscribe((address) => {
-      console.log(cars);
+      // console.log(cars);
       this.carArray = cars.filter(car => car.renterAddr === address);
     });
   }

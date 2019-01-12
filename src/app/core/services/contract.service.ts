@@ -52,7 +52,7 @@ export class ContractService {
 
     this.contract.events.NewCar((error, result) => {
         console.log(result);
-        this.addCarSubject.next(result.returnValues.carId);
+        this.addCarSubject.next(parseInt(result.returnValues.carId, 10));
         // this.delay(200).then(() => {
         //     this.snackBar.open('New Car Added', 'Dismiss', {
         //         duration: 2000,
@@ -63,7 +63,7 @@ export class ContractService {
     });
 
     this.contract.events.RentCar((error, result) => {
-        this.updateCarSubject.next(result.returnValues.carId);
+        this.updateCarSubject.next(parseInt(result.returnValues.carId, 10));
         // this.delay(100);
         // this.snackBar.open(result.returnValues.owner + '\'s car is rented by ' + result.returnValues.renter, 'Dismiss', {
         //     duration: 2000,
@@ -72,12 +72,12 @@ export class ContractService {
     });
 
     this.contract.events.ReturnCar((error, result) => {
-        this.updateCarSubject.next(result.returnValues.carId);
+        this.updateCarSubject.next(parseInt(result.returnValues.carId, 10));
         this.notificationService.pushNotification('return', result.returnValues.renter, result.returnValues.owner, null, result.id);
     });
 
     this.contract.events.CarCrash((error, result) => {
-        this.updateCarSubject.next(result.returnValues.carId);
+        this.updateCarSubject.next(parseInt(result.returnValues.carId, 10));
         this.notificationService.pushNotification('crash', result.returnValues.owner, null, result.returnValues.carId, result.id);
     });
   }

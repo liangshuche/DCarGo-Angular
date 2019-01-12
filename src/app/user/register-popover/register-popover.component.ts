@@ -1,5 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
+import { ContractService } from 'src/app/core/services/contract.service';
 
 @Component({
   selector: 'app-register-popover',
@@ -12,13 +13,20 @@ export class RegisterPopoverComponent implements OnInit {
   name: string;
   constructor(
     private dialogRef: MatDialogRef<RegisterPopoverComponent>,
+    private contractService: ContractService
   ) { }
 
   ngOnInit() {
   }
 
   onConfirm() {
-    this.dialogRef.close(this.name);
+    if (this.name.length) {
+      this.contractService.registerUserName(this.name).subscribe(() => {
+        this.dialogRef.close();
+      });
+    } else {
+      this.dialogRef.close();
+    }
     // this.doConfirm.emit(this.name);
   }
 
