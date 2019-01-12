@@ -23,17 +23,25 @@ contract CarHelper is CarRenter {
             z = (x / z + z) / 2;
         }
     }
-    function changeLocation(uint _carId, uint16 _newX, uint16 _newY) external onlyOwnerOf(_carId) {
+    function changeLocation(uint _carId, uint16 _newX, uint16 _newY, bool crashed) external onlyOwnerOf(_carId) {
+        if (cars[_carId].rentTime < now) {
+            emit RentTimeExpired(_carId, addressToName[msg.sender]);
+        } else {
+            if (crashed) {
+                cars[_carId].damage += 10;
+                emit CarCrash(_carId, addressToName[msg.sender]); 
+            }
+            uint64 x_dist = cars[_carId].xlocate > _newX ? cars[_carId].xlocate - _newX : _newX - cars[_carId].xlocate;
+            uint64 y_dist = cars[_carId].ylocate > _newY ? cars[_carId].ylocate - _newY : _newY - cars[_carId].ylocate; 
+            // uint dist = (cars[_carId].xlocate - _newX) * (cars[_carId].xlocate - _newX) + (cars[_carId].ylocate - _newY) * (cars[_carId].ylocate - _newY);
+            uint64 dist = (x_dist + y_dist);
+            cars[_carId].xlocate = _newX;
+            cars[_carId].ylocate = _newY;
 
-        uint32 x_dist = cars[_carId].xlocate > _newX ? cars[_carId].xlocate - _newX : _newX - cars[_carId].xlocate;
-        uint32 y_dist = cars[_carId].ylocate > _newY ? cars[_carId].ylocate - _newY : _newY - cars[_carId].ylocate; 
-        // uint dist = (cars[_carId].xlocate - _newX) * (cars[_carId].xlocate - _newX) + (cars[_carId].ylocate - _newY) * (cars[_carId].ylocate - _newY);
-        uint32 dist = (x_dist + y_dist);
+            cars[_carId].oil = cars[_carId].oil + dist;
+            emit CarMove(_carId, _newX, _newY);
+        }
         // dist = sqrt(dist);
-        cars[_carId].xlocate = _newX;
-        cars[_carId].ylocate = _newY;
-
-        cars[_carId].oil = cars[_carId].oil + dist;
         // uint oil_used = uint(dist / typeToOil[cars[_carId].cartype]);
         // uint8 oil_used = uint8(dist / 100);
         // if (cars[_carId].oil < oil_used) {
@@ -41,7 +49,6 @@ contract CarHelper is CarRenter {
         // }
         // require(cars[_carId].oil > 0, "Run out of oil");
         // cars[_carId].oil = cars[_carId].oil - oil_used;
-        emit CarMove(_carId, _newX, _newY);
     }
     function getCarByOwner(address _owner) external view returns(uint[]) {
         uint[] memory result = new uint[](ownerCarCount[_owner]);
