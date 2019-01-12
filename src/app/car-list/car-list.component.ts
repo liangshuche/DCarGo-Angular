@@ -40,7 +40,7 @@ export class CarListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.carRepoService.updateCars();
+    // this.carRepoService.updateCars();
     this.carRepoService.getAllCars().subscribe((cars) => {
       this.carArray = cars;
       this.updateDisplayCarArray();

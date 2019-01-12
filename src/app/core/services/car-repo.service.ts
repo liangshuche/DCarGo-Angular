@@ -14,7 +14,7 @@ export class CarRepoService {
   constructor(
     private contractService: ContractService
   ) {
-    this.updateCars();
+    // this.updateCars();
     this.carArray$ = new BehaviorSubject<CarModel[]>([]);
     this.contractService.onAddCar().subscribe((idx) => {
       this.addCar(idx);

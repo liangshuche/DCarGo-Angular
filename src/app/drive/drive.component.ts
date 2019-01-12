@@ -30,7 +30,7 @@ export class DriveComponent implements OnInit {
   ngOnInit() {
     // this.targetLocation.geoLatitude = 25.019312;
     // this.targetLocation.geoLongitude = 121.542274;
-    this.carRepoService.updateCars();
+    // this.carRepoService.updateCars();
     // zip(this.contractService.getcurrentAddress(), this.carRepoService.getAllCars()).subscribe((result) => {
     //   console.log(result);
     //   this.carArray = result[1].filter(car => car.renterAddr === result[0]);
@@ -42,6 +42,7 @@ export class DriveComponent implements OnInit {
 
   updateList(cars: CarModel[]) {
     this.contractService.getcurrentAddress().subscribe((address) => {
+      console.log(cars);
       this.carArray = cars.filter(car => car.renterAddr === address);
     });
   }
