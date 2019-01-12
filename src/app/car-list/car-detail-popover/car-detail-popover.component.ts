@@ -13,6 +13,8 @@ export class CarDetailPopoverComponent implements OnInit {
   id: number;
   car: CarModel = new CarModel();
   address: string;
+  rentTime: number = 0;
+  totalPrice: number;
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: any,
     private route: ActivatedRoute,
@@ -37,6 +39,10 @@ export class CarDetailPopoverComponent implements OnInit {
       console.log(car);
       this.car = car;
     });
+  }
+
+  onDragSlider(ev) {
+    this.rentTime = ev.value;
   }
 
   shouldDisable(target: string): boolean {

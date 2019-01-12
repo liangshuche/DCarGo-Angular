@@ -4,13 +4,22 @@
   <mat-divider></mat-divider>
   <br>
   <h5>Car Age: {{ car.age }}</h5>
-  <h5>Price: {{ car.price }}</h5>
-  <h5>Condition: {{ car.condition }}</h5>
-  <mat-slider [min]="0" [max]="100" [(ngModel)]="car.rentTime"></mat-slider>
+  <h5>Price: $ {{ car.price }} / Minute</h5>
+  <h5>Condition: {{ car.damage }}</h5>
+  <div class="slide-bar" *ngIf="car.ownerAddr !== address && car.ownerAddr === car.renterAddr">
+    <mat-slider [min]="0" [max]="20" [step]="1" [value]="rentTime" (input)="onDragSlider($event)" style="width: 100%"></mat-slider>
+    <h5>Rent for {{ rentTime }} minutes</h5>
+    <h5 ></h5>
+  </div>
 </mat-dialog-content>
   
 <mat-dialog-actions>
-  <button mat-button color="primary" (click)="onRent()" [disabled]="car.ownerAddr === address || car.ownerAddr !== car.renterAddr">Rent</button>
-  <button mat-button color="primary" (click)="onReturn()" [disabled]="car.ownerAddr === address || car.renterAddr !== address">Return</button>
-  <button mat-button mat-dialog-close color="warn" style="margin-right: 0; margin-left: auto">Close</button>
+  <button class="action-button" mat-button mat-dialog-close color="warn">Close</button>
+  <button class="action-button" mat-button 
+    *ngIf="car.ownerAddr !== address && car.ownerAddr === car.renterAddr" 
+    color="primary" (click)="onRent()" style="margin-right: 0; margin-left: auto"
+    [disabled]="!rentTime">$ {{ rentTime * car.price * 2}} Rent</button>
+  <button class="action-button" mat-button 
+    *ngIf="car.ownerAddr !== address && car.renterAddr === address" 
+    color="primary" (click)="onReturn()" style="margin-right: 0; margin-left: auto">Return</button>
 </mat-dialog-actions>

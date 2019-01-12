@@ -20,6 +20,7 @@ export class CarListComponent implements OnInit {
   lat: number = 51.678418;
   lng: number = 7.809007;
   carArray: CarModel[] = [];
+  displayCarArray: CarModel[] = [];
   filter: string = 'all';
   address: string;
   constructor(
@@ -35,6 +36,7 @@ export class CarListComponent implements OnInit {
     this.carRepoService.updateCars();
     this.carRepoService.getAllCars().subscribe((cars) => {
       this.carArray = cars;
+      this.updateDisplayCarArray();
     });
     this.contractService.getcurrentAddress().subscribe((address) => {
       this.address = address;
@@ -47,8 +49,7 @@ export class CarListComponent implements OnInit {
         id: idx,
       },
       autoFocus: false,
-      // width: '600px',
-      // height: '400px',
+      width: '500px',
     });
     // registerDialogRef.afterClosed().pipe(
     //   tap((name) => { console.log(name); }),
@@ -60,14 +61,23 @@ export class CarListComponent implements OnInit {
     // });
   }
 
-  shouldDisplay(car: CarModel): boolean {
+  updateDisplayCarArray() {
     if (this.filter === 'all') {
-      return true;
+      this.displayCarArray = this.carArray;
     } else if (this.filter === 'available') {
-      return false;
+      this.displayCarArray = this.carArray.filter((car) => {
+        return car.ownerAddr !== this.address && car.ownerAddr === car.renterAddr;
+      });
     } else {
-      return false;
+      this.displayCarArray = this.carArray.filter((car) => {
+        return car.ownerAddr === this.address || car.renterAddr === this.address;
+      });
     }
+  }
+
+  onClickRadio(ev) {
+    this.filter = ev.value;
+    this.updateDisplayCarArray();
   }
 
 }

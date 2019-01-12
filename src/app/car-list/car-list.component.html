@@ -17,15 +17,15 @@
       <div class="tab-container">
 
         <div style="height: 10px"></div>
-        <mat-radio-group class="radio-group" [(ngModel)]="filter">
+        <mat-radio-group class="radio-group"  [value]="filter" (change)="onClickRadio($event)">
             <mat-radio-button class="radio-button" value="all">All</mat-radio-button>
             <mat-radio-button class="radio-button" value="available">Available</mat-radio-button>
-            <mat-radio-button class="radio-button" value="rented-out">Rented Out</mat-radio-button>
+            <mat-radio-button class="radio-button" value="mine">My Cars</mat-radio-button>
         </mat-radio-group>
         <div fxLayout="row warp" fxLayoutAlign="space-around start">
         <!-- <div fxLayout="row" fxLayoutAlign="space-around start" *ngFor="let car of carArray" fxFill> -->
-          <div fxFlex="400px" *ngFor="let car of carArray" fxFill>
-            <mat-card class="example-card" *ngIf="shouldDisplay(car)" style="width: 80%">
+          <div fxFlex="400px" *ngFor="let car of displayCarArray" fxFill>
+            <mat-card class="example-card"  style="width: 80%">
               
                 <!-- <div fxflex="1 1 80%"> -->
                   <mat-card-header>
