@@ -1,27 +1,69 @@
 # DCarGoAngular
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.0.5.
+A Decentralized Car Rental Service on Ethereum powered by Angular and web3js.
 
-## Development server
+## Requirements
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+- Node (Tested with v10.11.0)
+- NPM (Tested with v6.5.0)
+```
+# Ubuntu
+sudo apt install curl
+curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+sudo apt install nodejs
 
-## Code scaffolding
+# MacOS
+brew install node
+```
+- Ganache
+```
+npm i -g ganache-cli
+```
+- Truffle v4.1.14
+```
+npm i -g truffle@4.1.14
+```
+- @angular/cli
+```
+npm i -g @angular/cli
+```
+- MetaMask Extension (https://metamask.io/)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Installation and Setup
 
-## Build
+1. `git clone https://github.com/liangshuche/DCarGo-Angular.git`
+2. `cd DCarGo-Angular`
+3. Start local blockchain server, copy the mnemonic and account addresses.
+```
+ganache-cli
+```
+4. Connect MetaMask to localhost:8545. Import accounts (recommend 2+ accounts).
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## Compile and Deploy Contract
 
-## Running unit tests
+1. `cd solidity`
+2. Install dependencies
+```
+npm i
+```
+3. `cp secret.js.sample secret.js`
+4. Set the `mnemonic` with the copied string in `secret.js`
+5. Compile and migrate contract 
+```
+truffle migrate --reset
+```
+6. Copy `CarHelper` Address.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Run Web App Server
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+1. `cd ..`
+2. Install dependencies 
+```
+npm i
+```
+3. Paste contract address to `/src/app/core/services/contract.service.ts:24`
+4. Start Server
+```
+ng serve --aot
+```
+5. Open your browser on `localhost:4200`
