@@ -6,7 +6,7 @@
       <agm-map [latitude]="25.0343" [longitude]="121.532" [streetViewControl]="false" [zoom]="13" [minZoom]="13">
       <!-- <agm-map [latitude]="25.0343" [longitude]="121.532" [streetViewControl]="false" [zoom]="13" [minZoom]="13" [fitBounds]="mapBounds" (boundsChange)="onDragMap($event)"> -->
         <!-- <agm-marker animation="DROP" *ngFor="let car of carArray" [latitude]="car.location.geoLatitude" [longitude]="car.location.geoLongitude"> -->
-        <agm-marker *ngFor="let car of carArray" (markerClick)="onClickMarker(info)" [latitude]="car.location.geoLatitude" [longitude]="car.location.geoLongitude">
+        <agm-marker *ngFor="let car of carArray" animation="DROP" (markerClick)="onClickMarker(info)" [latitude]="car.location.geoLatitude" [longitude]="car.location.geoLongitude">
           <agm-info-window #info>
             {{ car.name }}
             <br>

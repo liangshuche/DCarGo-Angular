@@ -76,6 +76,10 @@ export class ContractService {
         this.notificationService.pushNotification('return', result.returnValues.renter, result.returnValues.owner, null, result.id);
     });
 
+    this.contract.events.CarMove((error, result) => {
+        this.updateCarSubject.next(parseInt(result.returnValues.carId, 10));
+    });
+
     this.contract.events.CarCrash((error, result) => {
         this.updateCarSubject.next(parseInt(result.returnValues.carId, 10));
         this.notificationService.pushNotification('crash', result.returnValues.owner, null, result.returnValues.carId, result.id);
