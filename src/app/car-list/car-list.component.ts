@@ -1,8 +1,8 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { CarModel } from '../core/models/car.model';
 import { ContractService } from '../core/services/contract.service';
-import { map, mergeMap } from 'rxjs/operators';
-import { range } from 'rxjs';
+import { map, mergeMap, takeUntil, take } from 'rxjs/operators';
+import { range, Subject } from 'rxjs';
 import { CarRepoService } from '../core/services/car-repo.service';
 import { LocationModel } from '../core/models/location.model';
 import { MatDialog, MatSnackBar } from '@angular/material';
@@ -15,9 +15,10 @@ import { MarkerManager, LatLngBounds } from '@agm/core';
   templateUrl: './car-list.component.html',
   styleUrls: ['./car-list.component.scss']
 })
-export class CarListComponent implements OnInit {
+export class CarListComponent implements OnInit, OnDestroy {
   contract;
   eventHistoryMap: Map<string, boolean> = new Map<string, boolean>();
+  private ngUnsubscribe = new Subject();
 
   lat: number = 51.678418;
   lng: number = 7.809007;
@@ -28,6 +29,7 @@ export class CarListComponent implements OnInit {
     west: 121.457,
     east: 121.607
   };
+
   carArray: CarModel[] = [];
   displayCarArray: CarModel[] = [];
   filter: string = 'all';
@@ -43,28 +45,34 @@ export class CarListComponent implements OnInit {
 
   ngOnInit() {
     this.contract = this.contractService.getContract();
-    this.contractService.updateCurrentAddress().subscribe((address) => {
+    this.contractService.updateCurrentAddress().pipe(
+      take(1)
+    ).subscribe((address) => {
       this.address = address;
     });
 
-    this.contract.events.DepositForfeited((error, result) => {
-      console.log(result);
-      if (!this.eventHistoryMap.get(result.id) && result.returnValues.renter === this.address) {
-        this.eventHistoryMap.set(result.id, true);
+    this.contractService.onDepositForfeited().pipe(
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe((address) => {
+      if (address === this.address) {
         this.snackBar.open('Oops! You Forfeited Your Deposit', 'Dismiss', {
           duration: 2000,
         });
       }
     });
-    // this.carRepoService.updateCars();
-    this.carRepoService.getAllCars().subscribe((cars) => {
+
+    this.carRepoService.getAllCars().pipe(
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe((cars) => {
       this.carArray = cars;
       this.ref.detectChanges();
       this.updateDisplayCarArray();
     });
-    // this.contractService.getcurrentAddress().subscribe((address) => {
-    //   this.address = address;
-    // });
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   onDragMap(ev) {

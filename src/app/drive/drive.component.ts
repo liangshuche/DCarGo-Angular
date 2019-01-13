@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ContractService } from '../core/services/contract.service';
 import { LocationModel } from '../core/models/location.model';
 import { LocationService } from '../core/services/location.service';
 import { CarModel } from '../core/models/car.model';
 import { CarRepoService } from '../core/services/car-repo.service';
-import { mergeMap, tap } from 'rxjs/operators';
-import { zip, of } from 'rxjs';
+import { mergeMap, tap, takeUntil } from 'rxjs/operators';
+import { zip, of, Subject } from 'rxjs';
 import { MatSnackBar } from '@angular/material';
 
 @Component({
@@ -13,13 +13,14 @@ import { MatSnackBar } from '@angular/material';
   templateUrl: './drive.component.html',
   styleUrls: ['./drive.component.scss']
 })
-export class DriveComponent implements OnInit {
+export class DriveComponent implements OnInit, OnDestroy {
   contract;
   eventHistoryMap: Map<string, boolean> = new Map<string, boolean>();
+  private ngUnsubscribe = new Subject();
 
   targetLocation: LocationModel = new LocationModel();
   carArray: CarModel[] = [];
-  selectedIdx: number;
+  selectedIdx: number = -1;
 
   mapLatitude: number = 25.0343;
   mapLongitude: number = 121.532;
@@ -37,35 +38,36 @@ export class DriveComponent implements OnInit {
 
     this.contractService.updateCurrentAddress().subscribe();
 
-    this.contract.events.RentTimeExpired((error, result) => {
-      if (!this.eventHistoryMap.get(result.id) && parseInt(result.returnValues.carId, 10) === this.carArray[this.selectedIdx].id) {
-        this.eventHistoryMap.set(result.id, true);
-        this.snackBar.open('Rental Time Has Expired', 'Dismiss', {
-          duration: 2000,
-        });
-        this.targetLocation.geoLatitude = this.carArray[this.selectedIdx].location.geoLatitude;
-        this.targetLocation.geoLongitude = this.carArray[this.selectedIdx].location.geoLongitude;
-      }
-    });
-
-    this.contract.events.CarCrash((error, result) => {
-      if (!this.eventHistoryMap.get(result.id) && parseInt(result.returnValues.carId, 10) === this.carArray[this.selectedIdx].id) {
-        this.eventHistoryMap.set(result.id, true);
+    this.contractService.onCrashEvent().pipe(
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe((carId) => {
+      if (carId === this.carArray[this.selectedIdx].id) {
         this.snackBar.open('Oops! You Crashed Your Car', 'Dismiss', {
           duration: 2000,
         });
       }
     });
-    // this.targetLocation.geoLatitude = 25.019312;
-    // this.targetLocation.geoLongitude = 121.542274;
-    // this.carRepoService.updateCars();
-    // zip(this.contractService.getcurrentAddress(), this.carRepoService.getAllCars()).subscribe((result) => {
-    //   console.log(result);
-    //   this.carArray = result[1].filter(car => car.renterAddr === result[0]);
-    // });
+
+    this.contractService.onTimeExpired().pipe(
+      takeUntil(this.ngUnsubscribe)
+      ).subscribe((carId) => {
+        if (carId === this.carArray[this.selectedIdx].id) {
+          this.snackBar.open('Rental Time Has Expired', 'Dismiss', {
+            duration: 2000,
+          });
+          this.targetLocation.geoLatitude = this.carArray[this.selectedIdx].location.geoLatitude;
+          this.targetLocation.geoLongitude = this.carArray[this.selectedIdx].location.geoLongitude;
+        }
+    });
+
     this.carRepoService.getAllCars().subscribe((cars) => {
       this.updateList(cars);
     });
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   updateList(cars: CarModel[]) {

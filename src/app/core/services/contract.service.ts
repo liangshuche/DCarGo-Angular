@@ -29,6 +29,9 @@ export class ContractService {
   private addCarSubject: Subject<number>;
   private updateCarSubject: Subject<number>;
   private registerSubject: Subject<boolean>;
+  private crashEventSubject: Subject<number>;
+  private timeExpiredSubject: Subject<number>;
+  private depositForfeitedSubject: Subject<string>;
 
   private eventHistoryMap: Map<string, boolean> = new Map<string, boolean>();
 
@@ -49,40 +52,34 @@ export class ContractService {
     this.addCarSubject = new Subject<number>();
     this.updateCarSubject = new Subject<number>();
     this.registerSubject = new BehaviorSubject<boolean>(false);
+    this.crashEventSubject = new Subject<number>();
+    this.timeExpiredSubject = new Subject<number>();
+    this.depositForfeitedSubject = new Subject<string>();
 
     this.contract = new this.web3.eth.Contract(tokenAbi, this.contractAddress);
 
     this.contract.events.NewCar((error, result) => {
-        console.log(result);
-        this.addCarSubject.next(parseInt(result.returnValues.carId, 10));
-        // this.delay(200).then(() => {
-        //     this.snackBar.open('New Car Added', 'Dismiss', {
-        //         duration: 2000,
-        //     });
-        // });
-        // console.log(result.returnValues);
-        this.notificationService.pushNotification('add', result.returnValues.owner, null, result.returnValues.carId, result.id);
+        if (!this.eventHistoryMap.get(result.id)) {
+            this.eventHistoryMap.set(result.id, true);
+            this.addCarSubject.next(parseInt(result.returnValues.carId, 10));
+            this.notificationService.pushNotification('add', result.returnValues.owner, null, result.returnValues.carId, result.id);
+        }
     });
 
     this.contract.events.RentCar((error, result) => {
         if (!this.eventHistoryMap.get(result.id)) {
             this.eventHistoryMap.set(result.id, true);
             this.updateCarSubject.next(parseInt(result.returnValues.carId, 10));
+            this.notificationService.pushNotification('rent', result.returnValues.renter, result.returnValues.owner, null, result.id);
         }
-        // this.delay(100);
-        // this.snackBar.open(result.returnValues.owner + '\'s car is rented by ' + result.returnValues.renter, 'Dismiss', {
-        //     duration: 2000,
-        // });
-        this.notificationService.pushNotification('rent', result.returnValues.renter, result.returnValues.owner, null, result.id);
     });
 
     this.contract.events.ReturnCar((error, result) => {
         if (!this.eventHistoryMap.get(result.id)) {
             this.eventHistoryMap.set(result.id, true);
             this.updateCarSubject.next(parseInt(result.returnValues.carId, 10));
+            this.notificationService.pushNotification('return', result.returnValues.renter, result.returnValues.owner, null, result.id);
         }
-        // this.updateCarSubject.next(parseInt(result.returnValues.carId, 10));
-        this.notificationService.pushNotification('return', result.returnValues.renter, result.returnValues.owner, null, result.id);
     });
 
     this.contract.events.CarMove((error, result) => {
@@ -90,17 +87,30 @@ export class ContractService {
             this.eventHistoryMap.set(result.id, true);
             this.updateCarSubject.next(parseInt(result.returnValues.carId, 10));
         }
-        // this.updateCarSubject.next(parseInt(result.returnValues.carId, 10));
     });
 
     this.contract.events.CarCrash((error, result) => {
         if (!this.eventHistoryMap.get(result.id)) {
             this.eventHistoryMap.set(result.id, true);
             this.updateCarSubject.next(parseInt(result.returnValues.carId, 10));
+            this.crashEventSubject.next(parseInt(result.returnValues.carId, 10));
+            this.notificationService.pushNotification('crash', result.returnValues.owner, null, result.returnValues.carId, result.id);
         }
-        // this.updateCarSubject.next(parseInt(result.returnValues.carId, 10));
-        this.notificationService.pushNotification('crash', result.returnValues.owner, null, result.returnValues.carId, result.id);
     });
+
+    this.contract.events.RentTimeExpired((error, result) => {
+        if (!this.eventHistoryMap.get(result.id)) {
+            this.eventHistoryMap.set(result.id, true);
+            this.timeExpiredSubject.next(parseInt(result.returnValues.carId, 10));
+        }
+    });
+
+    this.contract.events.DepositForfeited((error, result) => {
+        if (!this.eventHistoryMap.get(result.id)) {
+          this.eventHistoryMap.set(result.id, true);
+          this.depositForfeitedSubject.next(result.returnValues.renter);
+        }
+      });
 
     this.contract.events.log((error, result) => {
         console.log(result);
@@ -119,6 +129,18 @@ export class ContractService {
 
     onRegisterEvent(): Observable<boolean> {
         return this.registerSubject.asObservable();
+    }
+
+    onCrashEvent(): Observable<number> {
+        return this.crashEventSubject.asObservable();
+    }
+
+    onTimeExpired(): Observable<number> {
+        return this.timeExpiredSubject.asObservable();
+    }
+
+    onDepositForfeited(): Observable<string> {
+        return this.depositForfeitedSubject.asObservable();
     }
 
 // ###################### GETTER ######################
