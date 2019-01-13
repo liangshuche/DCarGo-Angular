@@ -110,12 +110,7 @@ export class ContractService {
         if (this.currentAddress) {
             return of(this.currentAddress);
         } else {
-            return from(this.web3.eth.getAccounts()).pipe(
-                map((accounts) => {
-                this.currentAddress = accounts[0];
-                return accounts[0];
-                })
-            );
+            return this.updateCurrentAddress();
         }
     }
 
@@ -123,13 +118,7 @@ export class ContractService {
         if (this.currentName) {
             return of(this.currentName);
         } else {
-            return this.getcurrentAddress().pipe(
-                mergeMap((address) => {
-                    return from(this.contract.methods.getNameByAddress(address).call());
-                }),
-                tap(name => this.currentName = name),
-                tap(name => this.registerSubject.next(name ? true : false))
-            );
+            return this.updateCurrentName();
         }
     }
 
@@ -165,6 +154,25 @@ export class ContractService {
 
 
 // ###################### SETTER ######################
+
+    updateCurrentAddress(): Observable<string> {
+        return from(this.web3.eth.getAccounts()).pipe(
+            map((accounts) => {
+                this.currentAddress = accounts[0];
+                return accounts[0];
+            })
+        );
+    }
+
+    updateCurrentName(): Observable<string> {
+        return this.updateCurrentAddress().pipe(
+            mergeMap((address) => {
+                return from(this.contract.methods.getNameByAddress(address).call());
+            }),
+            tap(name => this.currentName = name),
+            tap(name => this.registerSubject.next(name ? true : false))
+        );
+    }
 
     registerUserName(name: string): Observable<string> {
         return this.getcurrentAddress().pipe(
@@ -243,7 +251,14 @@ export class ContractService {
         return this.getcurrentAddress().pipe(
             tap((address) => { this.presentSpinner(); console.log(address); }),
             mergeMap((address) => {
-                return from(this.contract.methods.addCar(car.name, CarTypeEnum[car.type], car.age, car.price, 0, 0).send({from: address}));
+                return from(this.contract.methods.addCar(
+                    car.name,
+                    CarTypeEnum[car.type],
+                    car.age,
+                    car.price,
+                    Math.floor(Math.random() * 15000), // xLocate
+                    Math.floor(Math.random() * 15000) // yLocate
+                ).send({from: address}));
             }),
             tap(() => this.spinnerRef.close()),
             catchError((err) => {

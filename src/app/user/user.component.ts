@@ -48,15 +48,17 @@ export class UserComponent implements OnInit {
   }
 
   updateUser() {
-    this.contractService.getcurrentAddress().subscribe((address) => {
-      this.userAddress = address;
-      this.userAddressStripped = this.userAddress.substr(0, 16) + '...';
-      this.updateCarCount();
-    });
-
-    this.contractService.getCurrentName().subscribe((name) => {
-      this.userName = name;
-    });
+    this.contractService.updateCurrentAddress().pipe(
+      map((address) => {
+        this.userAddress = address;
+        this.userAddressStripped = this.userAddress.substr(0, 16) + '...';
+        this.updateCarCount();
+      }),
+      mergeMap(() => {
+        return this.contractService.updateCurrentName();
+      }),
+      map(name => this.userName = name)
+    ).subscribe();
   }
 
   onClickRegister() {

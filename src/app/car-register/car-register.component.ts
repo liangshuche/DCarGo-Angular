@@ -20,6 +20,7 @@ export class CarRegisterComponent implements OnInit {
 
     ngOnInit() {
         console.log(this.carTypeOptions);
+        this.contractService.updateCurrentAddress().subscribe();
         this.registerForm = new FormGroup({
             age: new FormControl('', [Validators.required, Validators.max(100)])
         });

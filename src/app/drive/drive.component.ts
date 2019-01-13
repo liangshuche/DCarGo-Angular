@@ -35,6 +35,8 @@ export class DriveComponent implements OnInit {
   ngOnInit() {
     this.contract = this.contractService.getContract();
 
+    this.contractService.updateCurrentAddress().subscribe();
+
     this.contract.events.RentTimeExpired((error, result) => {
       if (!this.eventHistoryMap.get(result.id) && parseInt(result.returnValues.carId, 10) === this.carArray[this.selectedIdx].id) {
         this.eventHistoryMap.set(result.id, true);

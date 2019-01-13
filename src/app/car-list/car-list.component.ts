@@ -42,6 +42,9 @@ export class CarListComponent implements OnInit {
 
   ngOnInit() {
     this.contract = this.contractService.getContract();
+    this.contractService.updateCurrentAddress().subscribe((address) => {
+      this.address = address;
+    });
 
     this.contract.events.DepositForfeited((error, result) => {
       console.log(result);
@@ -57,9 +60,9 @@ export class CarListComponent implements OnInit {
       this.carArray = cars;
       this.updateDisplayCarArray();
     });
-    this.contractService.getcurrentAddress().subscribe((address) => {
-      this.address = address;
-    });
+    // this.contractService.getcurrentAddress().subscribe((address) => {
+    //   this.address = address;
+    // });
   }
 
   onDragMap(ev) {

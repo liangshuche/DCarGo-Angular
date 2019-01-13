@@ -15,9 +15,9 @@
         <button *ngIf="!registered" matTooltip="Please Register First" routerLink='/user' type="button" color="warn" mat-icon-button>
           <mat-icon>person_outline</mat-icon>
         </button>
-        <button type="button" mat-icon-button>
-          <mat-icon *ngIf="!newNotificationCount" (click)="onClick()">error_outline</mat-icon>
-          <mat-icon *ngIf="newNotificationCount" matBadge="&#8203;" matBadgeColor="warn" matBadgeSize="small" (click)="onClick()">error_outline</mat-icon>
+        <button type="button" (click)="onClick()" mat-icon-button>
+          <mat-icon *ngIf="!newNotificationCount">error_outline</mat-icon>
+          <mat-icon *ngIf="newNotificationCount" matBadge="&#8203;" matBadgeColor="warn" matBadgeSize="small">error_outline</mat-icon>
         </button>
       </div>
     </mat-toolbar-row>
