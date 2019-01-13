@@ -5,7 +5,7 @@ import { map, mergeMap } from 'rxjs/operators';
 import { range } from 'rxjs';
 import { CarRepoService } from '../core/services/car-repo.service';
 import { LocationModel } from '../core/models/location.model';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { CarDetailPopoverComponent } from './car-detail-popover/car-detail-popover.component';
 import { LocationService } from '../core/services/location.service';
 import { MarkerManager, LatLngBounds } from '@agm/core';
@@ -16,6 +16,9 @@ import { MarkerManager, LatLngBounds } from '@agm/core';
   styleUrls: ['./car-list.component.scss']
 })
 export class CarListComponent implements OnInit {
+  contract;
+  eventHistoryMap: Map<string, boolean> = new Map<string, boolean>();
+
   lat: number = 51.678418;
   lng: number = 7.809007;
   prevInfo: any;
@@ -34,11 +37,21 @@ export class CarListComponent implements OnInit {
     private contractService: ContractService,
     private carRepoService: CarRepoService,
     private locationSerivce: LocationService,
-    private ref: ChangeDetectorRef,
-    // private markerManager: MarkerManager,
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit() {
+    this.contract = this.contractService.getContract();
+
+    this.contract.events.DepositForfeited((error, result) => {
+      console.log(result);
+      if (!this.eventHistoryMap.get(result.id) && result.returnValues.renter === this.address) {
+        this.eventHistoryMap.set(result.id, true);
+        this.snackBar.open('Oops! You Forfeited Your Deposit', 'Dismiss', {
+          duration: 2000,
+        });
+      }
+    });
     // this.carRepoService.updateCars();
     this.carRepoService.getAllCars().subscribe((cars) => {
       this.carArray = cars;

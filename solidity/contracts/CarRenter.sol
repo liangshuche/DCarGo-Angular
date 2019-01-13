@@ -19,6 +19,7 @@ contract CarRenter is Ownable {
     event CarMove(uint carId, uint new_X, uint new_Y);
     event RentCar(uint carId, string renter, string owner);
     event ReturnCar(uint carId, string renter, string owner);
+    event DepositForfeited(uint carId, address renter);
     event RentTimeExpired(uint carId, string renter);
     event log(uint message);
 
@@ -128,6 +129,7 @@ contract CarRenter is Ownable {
         } else {
             szaboToOwner = cars[id].price * carToRentTime[id] * 1000 + cars[id].price * 50 * 1000;
             emit log(szaboToOwner);
+            emit DepositForfeited(id, cars[id].renter);
             cars[id].owner.transfer(szaboToOwner * 1 szabo);
         }
         cars[id].renter = cars[id].owner;
