@@ -37,7 +37,8 @@ export class CarListComponent implements OnInit {
     private contractService: ContractService,
     private carRepoService: CarRepoService,
     private locationSerivce: LocationService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private ref: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -58,6 +59,7 @@ export class CarListComponent implements OnInit {
     // this.carRepoService.updateCars();
     this.carRepoService.getAllCars().subscribe((cars) => {
       this.carArray = cars;
+      this.ref.detectChanges();
       this.updateDisplayCarArray();
     });
     // this.contractService.getcurrentAddress().subscribe((address) => {

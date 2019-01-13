@@ -30,6 +30,8 @@ export class ContractService {
   private updateCarSubject: Subject<number>;
   private registerSubject: Subject<boolean>;
 
+  private eventHistoryMap: Map<string, boolean> = new Map<string, boolean>();
+
   constructor(
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
@@ -63,7 +65,10 @@ export class ContractService {
     });
 
     this.contract.events.RentCar((error, result) => {
-        this.updateCarSubject.next(parseInt(result.returnValues.carId, 10));
+        if (!this.eventHistoryMap.get(result.id)) {
+            this.eventHistoryMap.set(result.id, true);
+            this.updateCarSubject.next(parseInt(result.returnValues.carId, 10));
+        }
         // this.delay(100);
         // this.snackBar.open(result.returnValues.owner + '\'s car is rented by ' + result.returnValues.renter, 'Dismiss', {
         //     duration: 2000,
@@ -72,16 +77,28 @@ export class ContractService {
     });
 
     this.contract.events.ReturnCar((error, result) => {
-        this.updateCarSubject.next(parseInt(result.returnValues.carId, 10));
+        if (!this.eventHistoryMap.get(result.id)) {
+            this.eventHistoryMap.set(result.id, true);
+            this.updateCarSubject.next(parseInt(result.returnValues.carId, 10));
+        }
+        // this.updateCarSubject.next(parseInt(result.returnValues.carId, 10));
         this.notificationService.pushNotification('return', result.returnValues.renter, result.returnValues.owner, null, result.id);
     });
 
     this.contract.events.CarMove((error, result) => {
-        this.updateCarSubject.next(parseInt(result.returnValues.carId, 10));
+        if (!this.eventHistoryMap.get(result.id)) {
+            this.eventHistoryMap.set(result.id, true);
+            this.updateCarSubject.next(parseInt(result.returnValues.carId, 10));
+        }
+        // this.updateCarSubject.next(parseInt(result.returnValues.carId, 10));
     });
 
     this.contract.events.CarCrash((error, result) => {
-        this.updateCarSubject.next(parseInt(result.returnValues.carId, 10));
+        if (!this.eventHistoryMap.get(result.id)) {
+            this.eventHistoryMap.set(result.id, true);
+            this.updateCarSubject.next(parseInt(result.returnValues.carId, 10));
+        }
+        // this.updateCarSubject.next(parseInt(result.returnValues.carId, 10));
         this.notificationService.pushNotification('crash', result.returnValues.owner, null, result.returnValues.carId, result.id);
     });
 
