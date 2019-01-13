@@ -2,6 +2,8 @@
 
 A Decentralized Car Rental Service on Ethereum powered by Angular and web3js.
 
+Tested on MacOS 10.14.2, Ubuntu 18.04 LTS
+
 ## Requirements
 
 - Node (Tested with v10.11.0)
@@ -32,16 +34,15 @@ npm i -g @angular/cli
 ## Installation and Setup
 
 1. `git clone https://github.com/liangshuche/DCarGo-Angular.git`
-2. `cd DCarGo-Angular`
-3. Start local blockchain server, copy the mnemonic and account addresses.
+2. Start local blockchain server on another terminal, copy the mnemonic and account addresses.
 ```
 ganache-cli
 ```
-4. Connect MetaMask to localhost:8545. Import accounts (recommend 2+ accounts).
+3. Connect MetaMask to localhost:8545. Import accounts (recommend 2+ accounts).
 
 ## Compile and Deploy Contract
 
-1. `cd solidity`
+1. `cd DCarGo-Angular/solidity`
 2. Install dependencies
 ```
 npm i
@@ -61,7 +62,7 @@ truffle migrate --reset
 ```
 npm i
 ```
-3. Paste contract address to `/src/app/core/services/contract.service.ts:24`
+3. Paste contract address to `src/app/core/services/contract.service.ts:24`
 4. Start Server
 ```
 ng serve --aot
