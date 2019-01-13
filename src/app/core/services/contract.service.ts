@@ -13,7 +13,7 @@ import { NotificationService } from './notification.service';
 declare let require: any;
 declare let window: any;
 
-const tokenAbi = require('../../../../solidity/build/ABI.json');
+const tokenAbi = require('../../../assets/ABI.json');
 
 @Injectable({
   providedIn: 'root'
