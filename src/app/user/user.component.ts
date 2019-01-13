@@ -43,7 +43,7 @@ export class UserComponent implements OnInit {
 
   updateCarCount() {
     this.numOwned = this.carArray.filter(car => car.ownerAddr === this.userAddress).length;
-    this.numRented = this.carArray.filter(car => car.renterAddr === this.userAddress).length - this.numOwned;
+    this.numRented = this.carArray.filter(car => car.renterAddr === this.userAddress && car.ownerAddr !== this.userAddress).length;
     this.numRentedOut = this.carArray.filter(car => car.ownerAddr === this.userAddress && car.renterAddr !== car.ownerAddr).length;
   }
 
